@@ -1,0 +1,85 @@
+.dialog-service-name {
+    font-size: 16px;
+}
+
+.icon {
+    color: red;
+}
+
+.dialog-service-included-title {
+    letter-spacing: 1px;
+}
+
+.dialog-service-excluded-title {
+    letter-spacing: 1px;
+}
+
+.dialog-service-accordion-question {
+    font-weight: 500 !important;
+}
+
+.accordion-summary .Mui-expanded {
+    margin-bottom: 10px !important;
+}
+
+.dialog-service-rating-star {
+    width: 10%;
+}
+
+.dialog-service-progress-bar {
+    width: 80%;
+}
+
+.dialog-service-rating-count {
+    width: 10%;
+}
+
+.user-review-avatar {
+    width: 15%;
+    min-width: 60px;
+}
+
+.user-review-detail {
+    width: 85%;
+}
+
+.cart-item_add-btn {
+    color: #9942e5;
+    width: 80px;
+    border: 1px solid #6E43E5;
+    border-radius: 10px;
+    padding: 5px 0;
+}
+
+.cart-item_add-btn span {
+    color: #6E43E5;
+}
+
+.cart-item_quantity {
+    color: #9942e5;
+    width: 80px;
+    padding: 5px 0;
+    border: 1px solid #6E43E5;
+    border-radius: 10px;
+}
+
+.cart-item_quantity-btn {
+    color: #6E43E5;
+}
+
+.cart-item_quantity-value {
+    color: #6E43E5;
+}
+
+.dialog-main::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dialog-main::-webkit-scrollbar-thumb {
+    background-color: rgb(216, 216, 216);
+    border-radius: 40px;
+}
+
+.dialog-main::-webkit-scrollbar-track {
+    background-color: transparent;
+}

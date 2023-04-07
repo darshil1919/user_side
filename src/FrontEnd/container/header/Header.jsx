@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getCategory, clearErrors } from "../../store/action/categoryAction";
 
 import headerStyles from "./Header.module.css";
@@ -17,8 +17,8 @@ export const Header = () => {
     // console.log(state.allCategory);
     return state.allCategory;
   })
-    
-  
+
+
   useEffect(() => {
     if (error) {
       console.log(error);
@@ -28,7 +28,7 @@ export const Header = () => {
 
   }, []);
 
-  if(loading == true){
+  if (loading == true) {
     return <h2>loading.....</h2>;
   }
 
@@ -67,9 +67,9 @@ export const Header = () => {
               // onClick={() => onclickHandler(item)}
               className={headerStyles.categories_container_item}
             >
-              <Link to={"/view?category=" + item.categoryName}>
+              <Link to={"/view?category=" + item.categoryName} className={headerStyles.categories_item}>
                 <img src={"/image/categoryImages/" + item.image} alt={item.categoryName} />
-                <span>{item.categoryName}</span>
+                <p>{item.categoryName}</p>
               </Link>
             </div>
           ))}

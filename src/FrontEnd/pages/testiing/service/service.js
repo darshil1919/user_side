@@ -50,12 +50,9 @@ export const Service = (props) => {
         <div className="item-list details-active">
           {service?.map((item, index) => {
             return (
-              <div key={index} className="item">
+              <div key={index} className="item my-4">
                 <div className="item-img">
-                  <img
-                    className="img-div"
-                    src={"/image/serviceImages/" + item.image}
-                  />
+                  <img className="img-div" src={"/image/serviceImages/" + item.image} />
                 </div>
                 <div className="item-detail">
                   <a href="#" className="item-name">
