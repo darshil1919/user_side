@@ -1,4 +1,5 @@
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import ScrollToTop from './ScrollToTop';
@@ -44,9 +45,9 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/SignIn" element={<SignIn />} />
-        <Route path="/SignUp" element={<SignUp />} /> 
+        <Route path="/SignUp" element={<SignUp />} />
         <Route path="/view" element={<View />} />
-        
+
         <Route path="/Categories" element={<ServicesCategories />} />
         <Route path="/Contact-Us" element={<ContactUs />} />
         <Route path="/checkout/:category/:service" element={<CheckoutForm />} />

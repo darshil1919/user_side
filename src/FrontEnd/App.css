@@ -1,6 +1,7 @@
 html {
   font-size: 10px;
 }
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -30,6 +31,7 @@ h2 {
   font-size: 4rem;
   margin-bottom: 1rem;
 }
+
 h3 {
   font-style: normal;
   font-weight: 600;
@@ -56,6 +58,7 @@ h5 {
   font-size: 2.5rem;
   opacity: 0.9;
 }
+
 p {
   line-height: 1.7em;
   position: relative;
@@ -85,12 +88,14 @@ p {
   touch-action: manipulation;
   transition-duration: 0.3s;
 }
+
 button {
   transition: 0.5s;
 }
-button:hover {
+
+/* button:hover {
   transform: scale(1.1);
-}
+} */
 
 .section__padding {
   padding: 4rem 6rem;
@@ -101,9 +106,21 @@ button:hover {
 }
 
 .scale-up-center {
-  -webkit-animation: scale-up-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1)
-    both;
+  -webkit-animation: scale-up-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
   animation: scale-up-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(185, 185, 185);
+  border-radius: 40px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 
 @media screen and (max-width: 1000px) {
@@ -116,6 +133,7 @@ button:hover {
   html {
     font-size: 7px;
   }
+
   .section__padding {
     padding: 4rem;
   }
@@ -129,17 +147,21 @@ button:hover {
   h1 {
     text-align: center;
   }
+
   h2 {
     text-align: center;
   }
+
   h3 {
     text-align: center;
     font-size: 3.5rem;
   }
+
   h4 {
     text-align: center;
     font-size: 5rem;
   }
+
   h5 {
     text-align: center;
   }

@@ -6,11 +6,17 @@ import "./style.css";
 import { Link } from "react-router-dom";
 import { GoPrimitiveDot } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
-import { getSubCategoryByCategory } from "../../../store/action/subcategoryAction";
-import { getServiceBySubCategory, clearErrors } from "../../../store/action/serviceAction";
+import {
+  getServiceBySubCategory,
+  clearErrors,
+} from "../../../store/action/serviceAction";
+import Details from "./Details";
 
 export const Service = (props) => {
   Aos.init({ duration: 700 });
+
+  const [open, setOpen] = React.useState(false);
+  const [dialogData, setDialogData] = React.useState({});
 
   const dispatch = useDispatch();
   const { loading, error, service } = useSelector((state) => {
@@ -26,6 +32,10 @@ export const Service = (props) => {
     dispatch(getServiceBySubCategory(props.subCategoryName));
   }, []);
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   if (loading == true) {
     return <h2>loading.....</h2>;
   }
@@ -40,7 +50,7 @@ export const Service = (props) => {
         <div className="item-list details-active">
           {service?.map((item, index) => {
             return (
-              <div key={index} className="item">
+              <div key={index} className="item my-4">
                 <div className="item-img">
                   <img className="img-div" src={"/image/serviceImages/" + item.image} />
                 </div>
@@ -49,18 +59,29 @@ export const Service = (props) => {
                     {item.serviceName}
                   </a>
                   <div className="item-price">
-                    <span className="new-price"><span>&#8377; </span>{item.price}</span>
+                    <span className="new-price">
+                      <span>&#8377; </span>
+                      {item.price}
+                    </span>
                     {/* <span className="old-price">$275.60</span> */}
                   </div>
                   <div className="item-price">
                     <span className="new-price">{item.duration} Minutes</span>
                     {/* <span className="old-price">$275.60</span> */}
                   </div>
-                  <p>
-                    {item.description}
-                  </p>
+                  <p>{item.description}</p>
                   <button type="button" className="add-btn">
                     add to cart
+                  </button>
+                  <button
+                    type="link"
+                    className="view_details_btn"
+                    onClick={() => {
+                      setOpen(true);
+                      setDialogData(item)
+                    }}
+                  >
+                    View Details
                   </button>
                 </div>
               </div>
@@ -90,6 +111,7 @@ export const Service = (props) => {
           })}
         </div>
       </div>
+      <Details open={open} handleClose={handleClose} data={dialogData} />
     </div>
   );
 };

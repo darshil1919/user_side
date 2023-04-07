@@ -7,7 +7,8 @@ const View = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get("category");
   const subcategory = searchParams.get("subcategory");
-  if(subcategory){
+  console.log("subcategory--->", subcategory);
+  if (subcategory) {
     return (
       <>
         <Service subCategoryName={subcategory} />
