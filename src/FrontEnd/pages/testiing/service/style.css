@@ -166,6 +166,20 @@ body{
     background-color: #fff;
     color: #202020;
 }
+.view_details_btn{
+    background: none!important;
+    border: none;
+    font-size: 2rem;
+    padding: 0!important;
+    font-weight: 600;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: #069;
+    transition: 0s;
+    /* text-decoration: none; */
+    cursor: pointer;
+}
 
 
 /* stylings for details active */
