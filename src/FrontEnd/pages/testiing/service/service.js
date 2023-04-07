@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { GoPrimitiveDot } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
 import { getSubCategoryByCategory } from "../../../store/action/subcategoryAction";
-import { getServiceBySubCategory } from "../../../store/action/serviceAction";
+import { getServiceBySubCategory, clearErrors } from "../../../store/action/serviceAction";
 
 export const Service = (props) => {
   Aos.init({ duration: 700 });
@@ -42,7 +42,7 @@ export const Service = (props) => {
             return (
               <div key={index} className="item">
                 <div className="item-img">
-                  <img className="img-div" src={"/image/serviceImages/" + item.image } />
+                  <img className="img-div" src={"/image/serviceImages/" + item.image} />
                 </div>
                 <div className="item-detail">
                   <a href="#" className="item-name">
