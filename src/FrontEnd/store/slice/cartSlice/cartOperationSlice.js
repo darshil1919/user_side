@@ -1,47 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 
-const cartSlice = createSlice({
-    name: 'cartOperationSlice',
+const cartOperationSlice = createSlice({
+    name: 'cartOperation',
     initialState: {
       loading: false,
     },
     reducers: {
-      ADD_TO_CART(state, action){ //1
-        const item = action.payload;
-
-        const isItemExist = state.cartItems.find(
-          (i) => i._id === item._id
-        );
-
-        if (isItemExist) {
-          return {
-            ...state,
-            cartItems: state.cartItems.map((i) =>
-              i._id === isItemExist._id ? item : i
-            ),
-          };
-        } else {
-          return {
-            ...state,
-            cartItems: [...state.cartItems, item],
-          };
+      ADD_TO_CART_REQUEST(state, action){ //1
+        return{
+          ...state,
+          loading: true,
         }
       },
-      REMOVE_CART_ITEM(state, action){ //2
+      ADD_TO_CART_SUCCESS(state, action){ //2
         return {
           ...state,
-          cartItems: state.cartItems.filter((i) => i.product !== action.payload),
-        };
-      },
-      ALL_CATEGORY_FAIL(state, action){ //3
-        return {
           loading: false,
-          category: [],
-          error: action.payload,
+          addedMsg: action.payload
         };
       },
-      CLEAR_ERRORS(state, action){ //4
+      ADD_TO_CART_FAIL(state, action){ //3
+        return {
+          ...state,
+          loading: false,
+          error: action.payload
+        };
+      },
+      ADD_TO_CART_RESET(state, action){ //4
+        return{
+          ...state,
+          addedMsg: null
+        }
+      },
+      CLEAR_ERRORS(state, action){ //5
         return {
           ...state,
           error: null,
@@ -50,10 +42,11 @@ const cartSlice = createSlice({
   }
 });
 
-export default cartSlice.reducer;
+export default cartOperationSlice.reducer;
 
 export const { 
-  ALL_CATEGORY_REQUEST,
-  ALL_CATEGORY_SUCCESS,
-  ALL_CATEGORY_FAIL,
-  CLEAR_ERRORS } = cartSlice.actions; 
+  ADD_TO_CART_REQUEST,
+  ADD_TO_CART_SUCCESS,
+  ADD_TO_CART_FAIL,
+  ADD_TO_CART_RESET,
+  CLEAR_ERRORS } = cartOperationSlice.actions;
