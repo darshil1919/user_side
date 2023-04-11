@@ -35,6 +35,8 @@ import Error from './pages/Error Page/Error';
 import UnderConstruction from './pages/under-construction/UnderConstruction';
 import Success from './pages/Success/Success';
 import View from './pages/testiing/View';
+import Cart from './pages/testiing/cart/Cart';
+import Checkout from './pages/testiing/checkout/Checkout';
 
 
 function App() {
@@ -47,6 +49,8 @@ function App() {
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/view" element={<View />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
 
         <Route path="/Categories" element={<ServicesCategories />} />
         <Route path="/Contact-Us" element={<ContactUs />} />

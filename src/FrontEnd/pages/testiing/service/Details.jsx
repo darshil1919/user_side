@@ -80,37 +80,6 @@ export default function Details({ open, handleClose, data, qty, handleIncrease, 
     // onAdd(quantity);
   };
 
-  // const handleDecrease = () => {
-  //   if (quantity > 0) {
-  //     const newQuantity = quantity - 1;
-  //     setQuantity(newQuantity);
-  //   }
-  //   // onDecrease(newQuantity);
-  //   const payload = {
-  //     categoryName: category,
-  //     subCategoryId: data.subCategoryId,
-  //     serviceId: data._id,
-  //     quantity: quantity - 1,
-  //   };
-
-  //   dispatch(updateCart(payload));
-  // };
-
-  // const handleIncrease = () => {
-  //   const newQuantity = quantity + 1;
-  //   setQuantity(newQuantity);
-  //   // onIncrease(newQuantity);
-  //   const payload = {
-  //     categoryName: category,
-  //     subCategoryId: data.subCategoryId,
-  //     serviceId: data._id,
-  //     quantity: quantity + 1,
-  //   };
-
-  //   dispatch(updateCart(payload));
-  // };
-
-
   return (
     <div>
       <Dialog

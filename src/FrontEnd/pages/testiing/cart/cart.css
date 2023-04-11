@@ -1,0 +1,115 @@
+.wrapper {
+	max-width: 1000px;
+	margin: 0 auto;
+}
+
+.wrapper h1 {
+	padding: 20px 0;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+.project {
+	display: flex;
+}
+
+.shop {
+	flex: 60%;
+}
+
+.box {
+	/* display: flex; */
+	width: 100%;
+	box-shadow: 0 0 10px 1px rgba(0, 4, 4, 0.15);
+}
+
+.box:hover {
+	box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.img-div img {
+	width: 160px;
+	height: 100%;
+}
+
+.content {
+	padding: 20px;
+	width: 100%;
+}
+
+.unit input {
+	width: 40px;
+	padding: 5px;
+	text-align: center;
+}
+
+.btn-area i {
+	margin-right: 5px;
+}
+
+.right-bar {
+	flex: 40%;
+	height: 400px;
+	margin-left: 20px;
+	border-radius: 5px;
+	background: #fff;
+}
+
+.right-bar a {
+	background-color: #6e42e5;
+	color: #fff;
+	text-decoration: none;
+	display: block;
+	text-align: center;
+	height: 40px;
+	line-height: 40px;
+	font-weight: 900;
+}
+
+.right-bar i {
+	margin-right: 15px;
+}
+
+.custom-container {
+	width: 100%;
+	max-width: 1140px;
+	padding-right: .75rem;
+	padding-left: .75rem;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+@media screen and (max-width: 700px) {
+	.content h3 {
+		margin-bottom: 15px;
+	}
+
+	.content h4 {
+		margin-bottom: 20px;
+	}
+
+	.btn2 {
+		display: none;
+	}
+
+	.img-div img {
+		width: 200px;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	.project {
+		flex-direction: column;
+	}
+
+	.right-bar {
+		margin-left: 0;
+		margin-bottom: 20px;
+	}
+}
+
+@media screen and (max-width: 1250px) {
+	.wrapper {
+		max-width: 95%;
+	}
+}

@@ -18,11 +18,7 @@ const OneService = ({ item, qty }) => {
   const { error, loading, addedMsg } = useSelector((state) => {
     return state.cartOperation;
   });
-  // const serviceCartDetail = useSelector((state) => {
-  //   // console.log(state.cartDetails.cart.filter((value) => {return value.items.serviceId == item._id}))
-  //   return state?.cartDetails?.cart?.filter((value) => {return value?.items?.serviceId == item?._id})
-  //   // return state.cartDetails
-  // })
+
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
@@ -37,15 +33,12 @@ const OneService = ({ item, qty }) => {
     if (qty) {
       setQuantity(qty);
     }
-    // dispatch(getCartDetails({categoryName: category}))
-    // dispatch(getServiceCartDetails({serviceId: item._id}))
   }, [qty, dispatch]);
 
   const handleDecrease = () => {
     if (quantity > 0) {
       const newQuantity = quantity - 1;
       setQuantity(newQuantity);
-      console.log("quantity ===???", quantity)
     }
     // onDecrease(newQuantity);
     const payload = {
@@ -95,11 +88,9 @@ const OneService = ({ item, qty }) => {
               <span>&#8377; </span>
               {item.price}
             </span>
-            {/* <span className="old-price">$275.60</span> */}
           </div>
           <div className="item-price">
             <span className="new-price">{item.duration} Minutes</span>
-            {/* <span className="old-price">$275.60</span> */}
           </div>
           <p>{item.description}</p>
           <div>
@@ -128,9 +119,6 @@ const OneService = ({ item, qty }) => {
               </div>
             )}
           </div>
-          {/* <button type="button" className="add-btn">
-                    add to cart
-                  </button> */}
           <button
             type="link"
             className="view_details_btn"
