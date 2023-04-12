@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './FrontEnd/App';
 import store from './FrontEnd/store/store';
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 // import { AuthProvider } from './FrontEnd/context/AuthProvider.js';
 
@@ -15,6 +17,20 @@ root.render(
     <Provider store={store}>
       <Router>
         <App />
+
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          limit={3}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="colored"
+        />
       </Router>
     </Provider>
   // </React.StrictMode>
