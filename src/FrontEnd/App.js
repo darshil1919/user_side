@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
@@ -37,9 +37,19 @@ import Success from './pages/Success/Success';
 import View from './pages/testiing/View';
 import Cart from './pages/testiing/cart/Cart';
 import Checkout from './pages/testiing/checkout/Checkout';
+import ProtectedRoute from './components/Route/ProtectedRoute';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadUser } from './store/action/userAction';
 
 
 function App() {
+  const dispatch = useDispatch();
+  const { isAuthenticated, admin } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(loadUser());
+  }, []);
+
   return (
     <>
       <Navbar />
@@ -49,8 +59,10 @@ function App() {
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/view" element={<View />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
+        {/* <Route path="/cart" element={<Cart />} /> */}
+        <Route path="/cart" element={<ProtectedRoute Component={Cart} />} />
+        <Route path="/checkout" element={<ProtectedRoute Component={Checkout} />} />
+        {/* <Route path="/checkout" element={<Checkout />} /> */}
 
         <Route path="/Categories" element={<ServicesCategories />} />
         <Route path="/Contact-Us" element={<ContactUs />} />

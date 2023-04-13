@@ -4,12 +4,17 @@ import { RiMenu3Line, RiCloseLine } from "react-icons/ri";
 import logo from "../../assets/icons/logo.png";
 import navbarStyles from "./navbar.module.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store/action/userAction";
 // import axios from "../../api/axios";
 // import { useContext } from "react";
 // import AuthContext from "../../context/AuthProvider";
 
 export const Navbar = () => {
   // const { auth } = useContext(AuthContext);
+  let {isAuthenticated} = useSelector((state) => state.user)
+  const dispatch = useDispatch();
+
   const [toggleMenu, setToggleMenu] = useState(false);
   const [data, setData] = useState({});
 
@@ -23,9 +28,10 @@ export const Navbar = () => {
 
   const navigate = useNavigate();
   const handleLogout = () => {
-    navigate("/");
-    localStorage.removeItem("response");
-    window.location.reload();
+    // navigate("/");
+    // localStorage.removeItem("response");
+    // window.location.reload();
+    dispatch(logout())
   };
 
   return (
@@ -61,11 +67,12 @@ export const Navbar = () => {
       </div>
 
       <div className={navbarStyles.navbar_sign}>
+        {isAuthenticated ? null : 
         <p className={navbarStyles.signIn}>
           {data.role ? data.fullName : <Link to="/SignIn">Sign in</Link>}
-        </p>
+        </p>}
         <p className={navbarStyles.logout}>
-          {data.role ? (
+          {isAuthenticated ? (
             <p onClick={handleLogout}>Logout</p>
           ) : (
             <Link to="/SignUp">
@@ -119,6 +126,7 @@ export const Navbar = () => {
                 </p>
               </div>
               <div className={navbarStyles.navbar_menu_container_links_sign}>
+                {isAuthenticated ? null :
                 <p
                   onClick={() => setToggleMenu(false)}
                   className={navbarStyles.signIn}
@@ -129,11 +137,12 @@ export const Navbar = () => {
                     <Link to="/SignIn">Sign in</Link>
                   )}
                 </p>
+                }
                 <div
                   onClick={() => setToggleMenu(false)}
                   className={navbarStyles.logout}
                 >
-                  {data.role ? (
+                  {isAuthenticated ? (
                     <p onClick={handleLogout}>Logout</p>
                   ) : (
                     <Link to="/SignUp">

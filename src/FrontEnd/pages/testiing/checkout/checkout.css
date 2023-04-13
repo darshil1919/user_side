@@ -21,10 +21,17 @@
 	border: 1px solid #999999;
 	/* border-radius: 50px; */
 	/* color: #454545; */
+	font-size: 16px;
 }
 
 .checkout_form label {
 	font-weight: 600;
+	font-size: 14px;
+}
+
+.dateSelect,
+.timeSelect {
+	font-size: 16px;
 }
 
 .checkout_cart_summary {
@@ -89,7 +96,8 @@
 }
 
 .checkout-btn {
-	background-color: rgb(245, 242, 253);;
+	background-color: rgb(245, 242, 253);
+	;
 	color: rgb(176, 176, 176);
 	height: 50px;
 	font-size: 16px;

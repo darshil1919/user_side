@@ -1,210 +1,390 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./checkout.css";
-import moment from "moment";
+import { Formik, Form, Field } from "formik";
+import * as yup from "yup";
+import ErrorForm from "./ErrorForm";
+import { useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearErrors_cartDetails,
+  getCartDetails,
+} from "../../../store/action/cartAction";
 
 const Checkout = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const category = searchParams.get("category");
+  const dispatch = useDispatch();
+
+  const { error, loading, cart } = useSelector((state) => {
+    return state.cartDetails;
+  });
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+      dispatch(clearErrors_cartDetails());
+    }
+
+    dispatch(getCartDetails({ categoryName: category }));
+  }, []);
+
+  const [selectedTime, setSelectedTime] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+
+  // Get current date and time
+  const now = new Date();
+  const currentHour = now.getHours();
+  const currentMinute = now.getMinutes();
+
+  // Generate time slots array based on selected date
+  const generateTimeSlots = () => {
+    const timeSlots = [];
+    const selectedDateObj = new Date(selectedDate);
+    const selectedDateHour = selectedDateObj.getHours();
+    const startTime = new Date();
+    if (selectedDateObj.toDateString() === now.toDateString()) {
+      // If selected date is today, start from current time + 2 hours
+      startTime.setHours(currentHour + 3, 0, 0, 0);
+    } else if (
+      selectedDateObj.toDateString() ===
+      new Date(now.setDate(now.getDate() + 1)).toDateString()
+    ) {
+      // If selected date is tomorrow, start from 8:00 AM
+      startTime.setHours(8, 0, 0, 0);
+    } else {
+      // For other dates, start from 8:00 AM
+      startTime.setHours(8, 0, 0, 0);
+    }
+    const endTime = new Date();
+    endTime.setHours(19, 30, 0, 0); // End time is 8 PM
+    while (startTime <= endTime) {
+      const time = startTime.toLocaleString("en-US", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+      });
+      timeSlots.push(time);
+      startTime.setMinutes(startTime.getMinutes() + 30); // Increment by 30 minutes
+    }
+    return timeSlots;
+  };
+
+  // Generate dates array
+  const generateDates = () => {
+    const dates = [];
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate());
+    for (let i = 0; i < 3; i++) {
+      const date = startDate.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+      dates.push(date);
+      startDate.setDate(startDate.getDate() + 1); // Increment by 1 day
+    }
+    return dates;
+  };
+
+  // Event handler for time selection
+  const handleTimeChange = (event) => {
+    console.log("event.target.value--->", event.target.value);
+
+    setSelectedTime(event.target.value);
+  };
+
+  // Event handler for date selection
+  const handleDateChange = (event) => {
+    const selectedDate = event.target.value;
+    console.log("selectedDate--->", selectedDate);
+    setSelectedDate(selectedDate);
+    // Reset selected time when date is changed
+    setSelectedTime("");
+  };
+
+  // Submit handler for form
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Do something with selected time and date
+    console.log("Selected Time:", selectedTime);
+    console.log("Selected Date:", selectedDate);
+  };
+
+  let validationschema = yup.object({
+    // fname: yup
+    //   .string()
+    //   .required("First Name Required")
+    //   .matches(/^[a-zA-Z ]*$/, "First Name must Alphabet"),
+    // lname: yup
+    //   .string()
+    //   .required("Last Name Required")
+    //   .matches(/^[a-zA-Z ]*$/, "Last Name must Alphabet"),
+    // email: yup
+    //   .string()
+    //   .email("Enter Valid Email")
+    //   .required("Email is Required"),
+    address: yup.string().required("Address is Required"),
+    state: yup.string().required("State is Required"),
+    city: yup
+      .string()
+      .required("City is Required")
+      .matches(/^[a-zA-Z ]*$/, "city must Alphabet"),
+    zip: yup.string().length(6, "Enter 6 Digit").required("Zip is Required"),
+    // date: yup.string().required("Select Date"),
+    // time: yup.string().required("Select time"),
+    date: yup
+      .string()
+      ./* required("Image is required"). */ test(
+        "customValidation",
+        "Select Date",
+        (value) => {
+          console.log("selectedDate----->", selectedDate.length == 0);
+          if (selectedDate.length == 0) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+      ),
+    time: yup
+      .string()
+      ./* required("Image is required"). */ test(
+        "customValidation",
+        "Select time",
+        (value) => {
+          // console.log("selectedDate----->", selectedDate.length == 0);
+          if (selectedTime.length == 0) {
+            return false;
+          } else {
+            return true;
+          }
+        }
+      ),
+  });
+
+  let onSubmitCheckout = (e) => {
+    console.log("date --==>>", e);
+    console.log("selectedTime --==>>", selectedTime);
+    console.log("selectedDate --==>>", selectedDate);
+  };
+
+  let initialValues = {
+    // fname: "",
+    // lname: "",
+    // email: "",
+    phone: "",
+    address: "",
+    state: "",
+    city: "",
+    zip: "",
+    date: "",
+    time: "",
+  };
 
   return (
     <>
-      <div class="custom-container px-5">
-        <h1 class="text-center py-4">checkout</h1>
-        <div class="row">
-          <div class="col-md-7">
-            <h4 class="mb-3">Address</h4>
-            <form
-              id="checkout_form"
-              enctype="multipart/form-data"
-              method="post"
-              class="needs-validation checkout_form"
-              novalidate=""
+      <div className="custom-container px-5">
+        <h1 className="text-center py-4">checkout</h1>
+        <div className="row">
+          <div className="col-md-7">
+            <h4 className="mb-3">Address</h4>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationschema}
+              onSubmit={onSubmitCheckout}
+              enableReinitialize={true}
             >
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="fname">First name</label>
-                  <input
-                    type="text"
-                    class="form-control check_user"
-                    id="fname"
-                    name="fname"
-                    placeholder="First Name"
-                    required=""
-                  />
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="lname">Last name</label>
-                  <input
-                    type="text"
-                    class="form-control check_user"
-                    id="lname"
-                    name="lname"
-                    placeholder="Last Name"
-                    required=""
-                  />
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <label for="email">Email</label>
-                <input
-                  type="email"
-                  class="form-control check_user"
-                  id="email"
-                  name="email"
-                  placeholder="you@example.com"
-                  required=""
-                />
-              </div>
-
-              <div class="mb-3">
-                <label for="address">Address</label>
-                <input
-                  type="text"
-                  class="form-control check_user"
-                  id="address"
-                  name="address"
-                  placeholder="1234 Main St"
-                  required=""
-                />
-              </div>
-
-              <div class="row">
-                <div class="col-md-5 mb-3">
-                  <label for="state">State</label>
-                  <input
-                    type="text"
-                    class="form-control check_user"
-                    id="state"
-                    name="state"
-                    placeholder="state"
-                    required=""
-                  />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="city">City</label>
-                  <input
-                    type="text"
-                    class="form-control check_user"
-                    id="city"
-                    name="city"
-                    placeholder="city"
-                    required=""
-                  />
-                </div>
-                <div class="col-md-3 mb-3">
-                  <label for="zip_code">Zip</label>
-                  <input
-                    type="text"
-                    class="form-control check_user"
-                    pattern="[0-9]{6}"
-                    id="zip_code"
-                    name="zip_code"
-                    placeholder=""
-                    required=""
-                  />
-                </div>
-              </div>
-
-              <hr class="mb-4" />
-              <div class="time">
-                <h5>When should the professional arrive?</h5>
-                <p>Your service will take approx. 30 mins</p>
-
-                <div class="d-flex">
-                  <div class="text-center py-2 px-3 m-2  time-date">
-                    <p class="mb-0 text-muted text-capitalize day-name">Thu</p>
-                    <p class="mb-0 fw-bold">13</p>
+              <Form
+                id="checkout_form"
+                // enctype="multipart/form-data"
+                method="post"
+                className="needs-validation checkout_form"
+                // novalidate=""
+              >
+                {/* <div className="row">
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="fname">First name</label>
+                    <Field
+                      type="text"
+                      className="form-control check_user"
+                      id="fname"
+                      name="fname"
+                      placeholder="First Name"
+                    />
+                    <ErrorForm name="fname" />
                   </div>
-                  <div class="text-center py-2 px-3 m-2  time-date">
-                    <p class="mb-0 text-muted text-capitalize day-name">Fri</p>
-                    <p class="mb-0 fw-bold">14</p>
+                  <div className="col-md-6 mb-3">
+                    <label htmlFor="lname">Last name</label>
+                    <Field
+                      type="text"
+                      className="form-control check_user"
+                      id="lname"
+                      name="lname"
+                      placeholder="Last Name"
+                    />
+                    <ErrorForm name="lname" />
+                  </div>
+                </div> */}
+
+                {/* <div className="mb-3">
+                  <label htmlFor="email">Email</label>
+                  <Field
+                    type="email"
+                    className="form-control check_user"
+                    id="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    required=""
+                  />
+                  <ErrorForm name="email" />
+                </div> */}
+
+                <div className="mb-3">
+                  <label htmlFor="address">Address</label>
+                  <Field
+                    type="text"
+                    className="form-control check_user"
+                    id="address"
+                    name="address"
+                    placeholder="1234 Main St"
+                    required=""
+                  />
+                  <ErrorForm name="address" />
+                </div>
+
+                <div className="row">
+                  <div className="col-md-5 mb-3">
+                    <label htmlFor="state">State</label>
+                    <Field
+                      type="text"
+                      className="form-control check_user"
+                      id="state"
+                      name="state"
+                      placeholder="state"
+                      required=""
+                    />
+                    <ErrorForm name="state" />
+                  </div>
+                  <div className="col-md-4 mb-3">
+                    <label htmlFor="city">City</label>
+                    <Field
+                      type="text"
+                      className="form-control check_user"
+                      id="city"
+                      name="city"
+                      placeholder="city"
+                      required=""
+                    />
+                    <ErrorForm name="city" />
+                  </div>
+                  <div className="col-md-3 mb-3">
+                    <label htmlFor="zip_code">Zip</label>
+                    <Field
+                      type="text"
+                      className="form-control check_user"
+                      // pattern="[0-9]{6}"
+                      id="zip"
+                      name="zip"
+                      placeholder="123456"
+                    />
+                    <ErrorForm name="zip" />
                   </div>
                 </div>
-                <hr />
-                <div class="pick-slot">
-                  <h5>Select start time of service</h5>
-                  <div class="d-flex flex-wrap">
-                    <div class="text-uppercase d-flex justify-content-center align-items-center p-2 m-2 time-slot">
-                      08:30 am
+
+                <hr className="mb-4" />
+                <div className="time">
+                  <h5>When should the professional arrive?</h5>
+                  <p>Your service will take approx. 30 mins</p>
+                  <div className="row">
+                    <div className="col-md-6 mb-3">
+                      <label htmlFor="date">Select Date</label>
+                      <Field
+                        as="select"
+                        className="form-select dateSelect"
+                        value={selectedDate}
+                        onChange={handleDateChange}
+                        name="date"
+                      >
+                        <option value="">select date</option>
+                        {generateDates().map((date) => (
+                          <option key={date} value={date}>
+                            {date}
+                          </option>
+                        ))}
+                      </Field>
+                      <ErrorForm name="date" />
                     </div>
-                    <div class="text-uppercase d-flex justify-content-center align-items-center p-2 m-2 time-slot">
-                      09:00 am
-                    </div>
-                    <div class="text-uppercase d-flex justify-content-center align-items-center p-2 m-2 time-slot">
-                      09:30 am
-                    </div>
-                    <div class="text-uppercase d-flex justify-content-center align-items-center p-2 m-2 time-slot">
-                      09:30 am
-                    </div>
-                    <div class="text-uppercase d-flex justify-content-center align-items-center p-2 m-2 time-slot">
-                      09:30 am
-                    </div>
-                    <div class="text-uppercase d-flex justify-content-center align-items-center p-2 m-2 time-slot">
-                      09:30 am
-                    </div>
-                    <div class="text-uppercase d-flex justify-content-center align-items-center p-2 m-2 time-slot">
-                      09:30 am
-                    </div>
-                    <div class="text-uppercase d-flex justify-content-center align-items-center p-2 m-2 time-slot">
-                      09:30 am
-                    </div>
-                    <div class="text-uppercase d-flex justify-content-center align-items-center p-2 m-2 time-slot">
-                      09:30 am
-                    </div>
-                    <div class="text-uppercase d-flex justify-content-center align-items-center p-2 m-2 time-slot">
-                      09:30 am
-                    </div>
-                    <div class="text-uppercase d-flex justify-content-center align-items-center p-2 m-2 time-slot">
-                      09:30 am
-                    </div>
-                    <div class="text-uppercase d-flex justify-content-center align-items-center p-2 m-2 time-slot">
-                      09:30 am
-                    </div>
-                    <div class="text-uppercase d-flex justify-content-center align-items-center p-2 m-2 time-slot">
-                      09:30 am
-                    </div>
-                    <div class="text-uppercase d-flex justify-content-center align-items-center p-2 m-2 time-slot">
-                      09:30 am
+                    <div className="col-md-6 mb-3">
+                      <label htmlFor="">Select Time</label>
+                      <Field
+                        as="select"
+                        className="form-select timeSelect"
+                        value={selectedTime}
+                        onChange={handleTimeChange}
+                        name="time"
+                      >
+                        <option value="">select Time</option>
+                        {generateTimeSlots().map((time) => (
+                          <option key={time} value={time}>
+                            {time}
+                          </option>
+                        ))}
+                      </Field>
+                      <ErrorForm name="time" />
                     </div>
                   </div>
                 </div>
-              </div>
-              <hr class="mb-4" />
-              <button class="btn font-bold p-2 checkout-btn">
-                Proceed to checkout
-              </button>
-            </form>
+                <hr className="mb-4" />
+                <button
+                  type="submit"
+                  className="btn font-bold p-2 checkout-btn"
+                >
+                  Proceed to checkout
+                </button>
+              </Form>
+            </Formik>
           </div>
-          <div class=" col-md-5 checkout-cart-total">
-            <h4 class="mb-3">Cart Total</h4>
-            <div class="checkout_cart_summary">
-              <h4 class="d-flex justify-content-between">
+          <div className=" col-md-5 checkout-cart-total">
+            <h4 className="mb-3">Cart Total</h4>
+            <div className="checkout_cart_summary">
+              <h4 className="d-flex justify-content-between">
                 Product <span>Total</span>
               </h4>
 
               <ul>
-                <li class="d-flex justify-content-between">
+                {cart?.cartData?.map((value, index) => {
+                  return (
+                    <li key={index} className="d-flex justify-content-between">
+                      {value?.serviceData[0].serviceName} X {value?.items?.quantity} <span><span>&#8377; </span>{value?.serviceData[0].price * value?.items?.quantity}</span>
+                    </li>
+                  );
+                })}
+                {/* <li className="d-flex justify-content-between">
                   Samsome Notebook Pro 5 X 01 <span>$295.00</span>
                 </li>
-                <li class="d-flex justify-content-between">
+                <li className="d-flex justify-content-between">
                   Aquet Drone D 420 X 02 <span>$550.00</span>
                 </li>
-                <li class="d-flex justify-content-between">
+                <li className="d-flex justify-content-between">
                   Play Station X 22 X 01 <span>$295.00</span>
                 </li>
-                <li class="d-flex justify-content-between">
+                <li className="d-flex justify-content-between">
                   Roxxe Headphone Z 75 X 01 <span>$110.00</span>
-                </li>
+                </li> */}
               </ul>
 
-              <p class="d-flex justify-content-between">
-                Sub Total <span>$1250.00</span>
+              <p className="d-flex justify-content-between">
+                Sub Total <span><span>&#8377; </span>{cart.subTotal}</span>
               </p>
-              <p class="d-flex justify-content-between">
-                Shipping Fee <span>$00.00</span>
+              <p className="d-flex justify-content-between">
+                Taxes and Fee(5%) <span><span>&#8377; </span>{ (cart?.subTotal)? Math.round(cart?.subTotal * 5 / 100) : 0}</span>
+              </p>
+              <p className="d-flex justify-content-between">
+                Minimum Order Fee <span><span>&#8377; </span>60</span>
               </p>
 
-              <h4 class="d-flex justify-content-between">
-                Grand Total <span>$1250.00</span>
+              <h4 className="d-flex justify-content-between">
+                Grand Total <span><span>&#8377; </span>{(cart?.subTotal) + ((cart?.subTotal)? Math.round(cart?.subTotal * 5 / 100) : 0) + 60}</span>
               </h4>
             </div>
           </div>

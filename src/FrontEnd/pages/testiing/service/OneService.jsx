@@ -10,6 +10,8 @@ import {
   getServiceCartDetails,
   updateCart,
 } from "../../../store/action/cartAction";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const OneService = ({ item, qty }) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,6 +19,9 @@ const OneService = ({ item, qty }) => {
 
   const { error, loading, addedMsg } = useSelector((state) => {
     return state.cartOperation;
+  });
+  const { isAuthenticated } = useSelector((state) => {
+    return state.user;
   });
 
   const dispatch = useDispatch();
@@ -36,33 +41,39 @@ const OneService = ({ item, qty }) => {
   }, [qty, dispatch]);
 
   const handleDecrease = () => {
-    if (quantity > 0) {
-      const newQuantity = quantity - 1;
-      setQuantity(newQuantity);
+    if (!isAuthenticated) {
+      toast.error("login required");
+    } else {
+      if (quantity > 0) {
+        const newQuantity = quantity - 1;
+        setQuantity(newQuantity);
+      }
+      // onDecrease(newQuantity);
+      const payload = {
+        categoryName: category,
+        subCategoryId: item.subCategoryId,
+        serviceId: item._id,
+        quantity: quantity - 1,
+      };
+      dispatch(updateCart(payload));
     }
-    // onDecrease(newQuantity);
-    const payload = {
-      categoryName: category,
-      subCategoryId: item.subCategoryId,
-      serviceId: item._id,
-      quantity: quantity - 1,
-    };
-
-    dispatch(updateCart(payload));
   };
 
   const handleIncrease = () => {
-    const newQuantity = quantity + 1;
-    setQuantity(newQuantity);
-    // onIncrease(newQuantity);
-    const payload = {
-      categoryName: category,
-      subCategoryId: item.subCategoryId,
-      serviceId: item._id,
-      quantity: quantity + 1,
-    };
-
-    dispatch(updateCart(payload));
+    if (!isAuthenticated) {
+      toast.error("login required");
+    } else {
+      const newQuantity = quantity + 1;
+      setQuantity(newQuantity);
+      // onIncrease(newQuantity);
+      const payload = {
+        categoryName: category,
+        subCategoryId: item.subCategoryId,
+        serviceId: item._id,
+        quantity: quantity + 1,
+      };
+      dispatch(updateCart(payload));
+    }
   };
 
   const handleClose = () => {
