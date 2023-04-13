@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { clearErrors_cartDetails, getCartDetails } from "../../../store/action/cartAction";
 import './cart.css';
 import SingleCartItem from "./SingleCartItem";
@@ -59,9 +59,11 @@ const Cart = () => {
             <p className="d-flex justify-content-between">
               <span>Total</span> <span><span>&#8377; </span>{(cart?.subTotal) + ((cart?.subTotal)? Math.round(cart?.subTotal * 5 / 100) : 0) + 60}</span>
             </p>
-            <a href="#">
+            {/* <a href="#"> */}
+            <Link to={"/checkout?category=" + category}>
               <i className="fa fa-shopping-cart"></i>Checkout
-            </a>
+            </Link>
+            {/* </a> */}
           </div>
         </div>
       </div>

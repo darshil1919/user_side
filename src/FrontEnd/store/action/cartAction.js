@@ -22,8 +22,6 @@ export function getCartDetails(payload) {
       const config = { headers: { "Content-Type": "application/json" } };
 
       const { data } = await axios.post(`/api/v1/cart/getCategoryWiseCart`, payload, config);
-      console.log(data.data)
-
 
       dispatch(CART_DETAILS_SUCCESS(data.data));
     } catch (error) {

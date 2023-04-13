@@ -1,30 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../CommonSignInSignUp.css";
 import { FormInput } from "../Form-Inputs/FormInput";
 import axios from "../../../api/axios";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrors, register } from "../../../store/action/userAction";
 
 const SIGN_UP_URL = "/user/register";
 
 export const SignUp = () => {
-  // const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const {error, loading, isAuthenticated} = useSelector((state) => state.user);
+  const navigate = useNavigate();
   // const [success, setSuccess] = useState(false);
   // const [errMsg, setErrMsg] = useState("");
 
-  // const [values, setValues] = useState({
-  //   fname: "",
-  //   lname: "",
-  //   email: "",
-  //   phone: "",
-  //   password: "",
-  //   confirmPassword: "",
-  // });
+  useEffect(() => {
+    if(error){
+        console.log(error)
+        dispatch(clearErrors())
+    }
+    if (isAuthenticated) {
+        navigate("/")
+    }
+}, [dispatch, error, isAuthenticated, navigate])
 
   let initialValues={
-    fname: "",
-    lname: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
     password: "",
@@ -32,11 +37,11 @@ export const SignUp = () => {
   }
 
   let validationschema = yup.object({
-    fname: yup
+    firstName: yup
       .string()
       .required("First Name Required")
       .matches(/^[a-zA-Z ]*$/, "First Name must Alphabet"),
-    lname: yup
+    lastName: yup
       .string()
       .required("Last Name Required")
       .matches(/^[a-zA-Z ]*$/, "Last Name must Alphabet"),
@@ -58,14 +63,14 @@ export const SignUp = () => {
   const inputs = [
     {
       id: 1,
-      name: "fname",
+      name: "firstName",
       type: "text",
       placeholder: "First name",
       label: "Firstname",
     },
     {
       id: 2,
-      name: "lname",
+      name: "lastName",
       type: "text",
       placeholder: "Last name",
       label: "Lastname",
@@ -101,7 +106,8 @@ export const SignUp = () => {
   ];
 
   const handleSubmit = async (e) => {
-    console.log(e)
+    let {firstName, lastName, email, phone, password} = e
+    dispatch(register({firstName, lastName, email, phone, password}))
   };
 
   // const onChange = (e) => {
