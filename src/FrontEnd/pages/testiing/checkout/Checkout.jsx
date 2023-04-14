@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from 'axios';
 import "./checkout.css";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
@@ -9,6 +10,8 @@ import {
   clearErrors_cartDetails,
   getCartDetails,
 } from "../../../store/action/cartAction";
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const Checkout = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,6 +30,8 @@ const Checkout = () => {
 
     dispatch(getCartDetails({ categoryName: category }));
   }, []);
+
+  console.log("cart---------->", cart);
 
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
@@ -129,7 +134,7 @@ const Checkout = () => {
       .string()
       .required("City is Required")
       .matches(/^[a-zA-Z ]*$/, "city must Alphabet"),
-    zip: yup.string().length(6, "Enter 6 Digit").required("Zip is Required"),
+    pinCode: yup.string().length(6, "Enter 6 Digit").required("PinCode is Required"),
     // date: yup.string().required("Select Date"),
     // time: yup.string().required("Select time"),
     date: yup
@@ -162,10 +167,45 @@ const Checkout = () => {
       ),
   });
 
-  let onSubmitCheckout = (e) => {
-    console.log("date --==>>", e);
-    console.log("selectedTime --==>>", selectedTime);
-    console.log("selectedDate --==>>", selectedDate);
+  let onSubmitCheckout = (value) => {
+    // console.log("date --==>>", e);
+    let startTime = new Date(selectedDate + " " + selectedTime);
+    let endTime = new Date(startTime.getTime() + cart.totalTime * 60000);
+    let orderFee = 60;
+    let tax = (cart?.subTotal) ? Math.round(cart?.subTotal * 5 / 100) : 0;
+    let grandTotal = (cart?.subTotal) + tax + orderFee;
+    let payload = {
+      categoryId: cart?.cartData[0].items.categoryId,
+      startTime: startTime,
+      endTime: endTime,
+      totalTime: cart?.totalTime,
+      grandTotal: grandTotal,
+      paymentMode: 'COD',
+      tax: tax,
+      subTotal: cart?.subTotal,
+      orderFee: orderFee,
+      serviceLocation: {
+        address: value.address,
+        city: value.city,
+        state: value.state,
+        pinCode: value.pinCode,
+      },
+      itemData: cart.cartData,
+    }
+    const config = { headers: { "Content-Type": "application/json" } };
+    axios.post(`/api/v1/order/add`, payload, config)
+      .then(res => {
+        console.log(res);
+        console.log(res.data.data);
+        toast.success(res.data.data);
+      }).catch((error) => {
+        toast.error(error.response.data.message);
+        console.log("error=>", error)
+      })
+    console.log("payload---->", payload);
+    // console.log("selectedDateselectedDate------------>", new Date(selectedDate + " " + selectedTime));
+    // console.log("selectedTime --==>>", selectedTime);
+    // console.log("selectedDate --==>>", selectedDate);
   };
 
   let initialValues = {
@@ -176,7 +216,7 @@ const Checkout = () => {
     address: "",
     state: "",
     city: "",
-    zip: "",
+    pinCode: "",
     date: "",
     time: "",
   };
@@ -199,7 +239,7 @@ const Checkout = () => {
                 // enctype="multipart/form-data"
                 method="post"
                 className="needs-validation checkout_form"
-                // novalidate=""
+              // novalidate=""
               >
                 {/* <div className="row">
                   <div className="col-md-6 mb-3">
@@ -278,23 +318,23 @@ const Checkout = () => {
                     <ErrorForm name="city" />
                   </div>
                   <div className="col-md-3 mb-3">
-                    <label htmlFor="zip_code">Zip</label>
+                    <label htmlFor="pinCode">PinCode</label>
                     <Field
                       type="text"
                       className="form-control check_user"
                       // pattern="[0-9]{6}"
-                      id="zip"
-                      name="zip"
+                      id="pinCode"
+                      name="pinCode"
                       placeholder="123456"
                     />
-                    <ErrorForm name="zip" />
+                    <ErrorForm name="pinCode" />
                   </div>
                 </div>
 
                 <hr className="mb-4" />
                 <div className="time">
                   <h5>When should the professional arrive?</h5>
-                  <p>Your service will take approx. 30 mins</p>
+                  <p>Your service will take approx. <span className="fw-bold">{cart.totalTime}</span> Minutes</p>
                   <div className="row">
                     <div className="col-md-6 mb-3">
                       <label htmlFor="date">Select Date</label>
@@ -377,14 +417,14 @@ const Checkout = () => {
                 Sub Total <span><span>&#8377; </span>{cart.subTotal}</span>
               </p>
               <p className="d-flex justify-content-between">
-                Taxes and Fee(5%) <span><span>&#8377; </span>{ (cart?.subTotal)? Math.round(cart?.subTotal * 5 / 100) : 0}</span>
+                Taxes and Fee(5%) <span><span>&#8377; </span>{(cart?.subTotal) ? Math.round(cart?.subTotal * 5 / 100) : 0}</span>
               </p>
               <p className="d-flex justify-content-between">
-                Minimum Order Fee <span><span>&#8377; </span>60</span>
+                Order Fee <span><span>&#8377; </span>60</span>
               </p>
 
               <h4 className="d-flex justify-content-between">
-                Grand Total <span><span>&#8377; </span>{(cart?.subTotal) + ((cart?.subTotal)? Math.round(cart?.subTotal * 5 / 100) : 0) + 60}</span>
+                Grand Total <span><span>&#8377; </span>{(cart?.subTotal) + ((cart?.subTotal) ? Math.round(cart?.subTotal * 5 / 100) : 0) + 60}</span>
               </h4>
             </div>
           </div>
