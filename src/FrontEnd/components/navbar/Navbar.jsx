@@ -45,13 +45,15 @@ export const Navbar = () => {
           <p>
             <Link to="/">Home</Link>
           </p>
+          {(isAuthenticated) ? 
           <p>
-            <Link to="/Categories">Categories</Link>
-          </p>
+            <Link to="/orders">Orders</Link>
+          </p> : null
+          }
           <p>
             <Link to="/RegisterAsProfessional">Register As Professional</Link>
           </p>
-          <p>
+          {/* <p>
             {data.role === "admin" ? (
               <Link to="/admin-dashboard">Admin Dashboard</Link>
             ) : data.role === "professional" ? (
@@ -59,7 +61,7 @@ export const Navbar = () => {
             ) : (
               <Link to="/under-construction">User Dashboard</Link>
             )}
-          </p>
+          </p> */}
           <p>
             <Link to="/ContactUs">Contact Us</Link>
           </p>
@@ -104,15 +106,17 @@ export const Navbar = () => {
                 <p onClick={() => setToggleMenu(false)}>
                   <Link to="/">Home</Link>
                 </p>
+                {(isAuthenticated) ? 
                 <p onClick={() => setToggleMenu(false)}>
-                  <Link to="/Categories">Categories</Link>
-                </p>
-                <p onClick={() => setToggleMenu(false)}>
+                  <Link to="/orders">Orders</Link>
+                </p> : null
+                }
+                {/* <p onClick={() => setToggleMenu(false)}>
                   <Link to="/RegisterAsProfessional">
                     Register As Professional
                   </Link>
-                </p>
-                <p onClick={() => setToggleMenu(false)}>
+                </p> */}
+                {/* <p onClick={() => setToggleMenu(false)}>
                   {data.role === "admin" ? (
                     <Link to="/admin-dashboard">Admin Dashboard</Link>
                   ) : data.role === "professional" ? (
@@ -120,7 +124,7 @@ export const Navbar = () => {
                   ) : (
                     <Link to="/under-construction">User Dashboard</Link>
                   )}
-                </p>
+                </p> */}
                 <p onClick={() => setToggleMenu(false)}>
                   <Link to="/ContactUs">Contact Us</Link>
                 </p>

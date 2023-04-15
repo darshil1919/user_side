@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useNavigate, Route, Navigate } from "react-router-dom";
 // import { Login } from "../../pages";
 import Loader from "../Loader/Loader";
+import { SignIn } from "../../container/SignIn-SignUp/Sign-In/SignIn";
 
 // const ProtectedRoute = ({component: Component, ...rest }) => {
 //   const { loading, isAuthenticated, admin } = useSelector((state) => state.admin);
@@ -43,6 +44,7 @@ import Loader from "../Loader/Loader";
 const ProtectedRoute = (props) => {
   const { Component } = props;
   const { loading, isAuthenticated } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   // const navigate = useNavigate();
   // useEffect(() => {
   //   if(!isAuthenticated){
@@ -53,7 +55,7 @@ const ProtectedRoute = (props) => {
   if(loading){
     return <Loader />
   } else {
-  return isAuthenticated ? <Component /> : <Navigate to="/SignIn" />
+  return isAuthenticated ? <Component /> : <SignIn />;
   }
 }
 

@@ -1,29 +1,29 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 
-const cartDetailsSlice = createSlice({
-    name: 'cartDetails',
+const orderDetailsSlice = createSlice({
+    name: 'orderDetails',
     initialState: {
       loading: true,
-      cart: []
+      order: []
     },
     reducers: {
-      CART_DETAILS_REQUEST(state, action){ //1
+      ORDER_DETAILS_REQUEST(state, action){ //1
         return {
           loading: true,
-          cart: []
+          order: []
         }
       },
-      CART_DETAILS_SUCCESS(state, action){ //2
+      ORDER_DETAILS_SUCCESS(state, action){ //2
         return {
           loading: false,
-          cart: action.payload
+          order: action.payload
         };
       },
-      CART_DETAILS_FAIL(state, action){ //3
+      ORDER_DETAILS_FAIL(state, action){ //3
         return {
           loading: false,
-          cart: [],
+          order: [],
           error: action.payload,
         };
       },
@@ -36,10 +36,10 @@ const cartDetailsSlice = createSlice({
   }
 });
 
-export default cartDetailsSlice.reducer;
+export default orderDetailsSlice.reducer;
 
 export const { 
-  CART_DETAILS_REQUEST,
-  CART_DETAILS_SUCCESS,
-  CART_DETAILS_FAIL,
-  CLEAR_ERRORS } = cartDetailsSlice.actions;
+  ORDER_DETAILS_REQUEST,
+  ORDER_DETAILS_SUCCESS,
+  ORDER_DETAILS_FAIL,
+  CLEAR_ERRORS } = orderDetailsSlice.actions;

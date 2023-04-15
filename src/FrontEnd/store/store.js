@@ -19,6 +19,9 @@ import allServiceSlice from './slice/serviceSlice/allServiceSlice';
 import cartOperationSlice from './slice/cartSlice/cartOperationSlice';
 import cartDetailsSlice from './slice/cartSlice/cartDetailsSlice';
 
+// order slice
+import orderDetailsSlice from './slice/orderSlice/orderDetailsSlice';
+
 const store = configureStore({
     reducer: {
         // user slice
@@ -39,7 +42,10 @@ const store = configureStore({
 
         // cart slice
         cartDetails: cartDetailsSlice,
-        cartOperation : cartOperationSlice
+        cartOperation : cartOperationSlice,
+
+        // order slice
+        orderDetails: orderDetailsSlice
     },
 });
 

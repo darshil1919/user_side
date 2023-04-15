@@ -23,6 +23,7 @@ export const Service = (props) => {
   const category = searchParams.get("category");
 
   const dispatch = useDispatch();
+  const {isAuthenticated} = useSelector((state) =>  state.user)
   const { loading, error, service } = useSelector((state) => {
     return state.allService;
   });
@@ -49,7 +50,10 @@ export const Service = (props) => {
       <div className={serviceStyle.services_container_title}>
         <h4>{props.subCategoryName}</h4>
         <h5>{"Explore the greatest our services."}</h5>
-        <Link to={"/cart?category=" + category}>Cart</Link>
+        {(cart && isAuthenticated) ? 
+        <Link className="btn btn-primary" to={"/cart?category=" + category}>Cart</Link> :
+        null
+        }
       </div>
       <div className={serviceStyle.services_container_content}>
         <div className="item-list details-active">
