@@ -26,8 +26,26 @@ const Cart = () => {
     dispatch(getCartDetails({ categoryName: category }));
   }, []);
 
+  // if(!cart?.cartData){
+  //   return (
+  //   <>
+  //     <h1>cart is empty</h1>
+  //     <Link className="btn btn-primary" to={"/view?category=" + category}>Explore Services</Link>
+  //   </>
+  //   )
+  // }
   return (
-    <>
+  (loading) ? (
+    <Backdrop
+    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+    open={loading}
+    >
+      <CircularProgress color="inherit" />
+    </Backdrop>
+  ) : (
+    (cart?.cartData?.length > 0) ? 
+    (<>
+      {console.log("cart items length -->>>", cart?.cartData?.length)}
       <div className="custom-container px-5">
         <h1 className="text-center py-4">Shopping Cart</h1>
         <div className="project">
@@ -67,13 +85,20 @@ const Cart = () => {
           </div>
         </div>
       </div>
-      {(loading)? <Backdrop
+      {/* {(loading)? <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}
       >
         <CircularProgress color="inherit" />
-      </Backdrop> : null }
+      </Backdrop> : null } */}
+    </>) : (
+      <>
+      {/* <h1>cart is empty</h1> */}
+      <img src="https://img.freepik.com/premium-vector/shopping-cart-with-cross-mark-wireless-paymant-icon-shopping-bag-failure-paymant-sign-online-shopping-vector_662353-912.jpg" alt="" />
+      <Link className="btn btn-primary" to={"/view?category=" + category}>Explore Services</Link>
     </>
+    )
+    )
   );
 };
 

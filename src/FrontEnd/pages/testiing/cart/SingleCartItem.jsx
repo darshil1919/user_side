@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import { getCartDetails, updateCart } from "../../../store/action/cartAction";
 import { useSearchParams } from "react-router-dom";
 import { FaMinus, FaPlus } from "react-icons/fa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Backdrop, CircularProgress } from "@mui/material";
 
 const SingleCartItem = ({value, qty}) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get("category");
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(qty);
+  const {loading} = useSelector((state) => state.cartOperation)
 
   useEffect(() => {
     if (qty) {
@@ -99,6 +101,12 @@ const SingleCartItem = ({value, qty}) => {
           </div>
         </div>
       </div>
+      {(loading)? <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={loading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop> : null }
     </>
   );
 };
