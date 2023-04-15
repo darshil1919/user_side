@@ -14,24 +14,26 @@ import 'react-toastify/dist/ReactToastify.css'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
-    <Provider store={store}>
-      <Router>
-        <App />
+  <Provider store={store}>
+    <Router>
+      <App />
 
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          limit={3}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-        />
-      </Router>
-    </Provider>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        limit={3}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        progressClassName="toastProgress"
+        bodyClassName="toastBody"
+      />
+    </Router>
+  </Provider>
   // </React.StrictMode>
 );
