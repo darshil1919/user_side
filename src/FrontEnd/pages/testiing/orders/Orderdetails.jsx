@@ -163,9 +163,19 @@ const Orderdetails = ({ open, handleClose, data }) => {
                             <span
                               className="ps-2 fs-4 link-primary dialog-service-included-text"
                               onClick={() => {
-                                setReviewDialogData({
-                                  serviceId: item.serviceId,
-                                });
+                                if(item.reviewId){
+                                  setReviewDialogData({
+                                    isEditable: false,
+                                    reviewId: item.reviewId
+                                  })
+                                } else {
+                                  setReviewDialogData({
+                                    isEditable: true,
+                                    serviceId: item.serviceId,
+                                    orderId: data._id,
+                                    _id: item._id
+                                  });
+                                }
                                 setDialogReviewOpen(true);
                               }}>Review</span>
                           </>
@@ -192,9 +202,7 @@ const Orderdetails = ({ open, handleClose, data }) => {
                 </div>
               </div> */}
               <hr className="border-3 border-secondary border-bottom" />
-              {data.status == "pending" ||
-              data.status == "completed" ||
-              data.status == "cancelled" ? null : (
+              {(data.status != "confirmed") ? null : (
                 <>
                   <div className="py-2 dialog-service-FAQs">
                     <p className="fw-bold mb-1 text-capitalize dialog-service-FAQs-title">
@@ -244,6 +252,60 @@ const Orderdetails = ({ open, handleClose, data }) => {
                   <hr className="border-3 border-secondary border-bottom" />
                 </>
               )}
+              {(data.status != "working") ? null : (
+                <>
+                  <div className="py-2 dialog-service-FAQs">
+                    <p className="fw-bold mb-1 text-capitalize dialog-service-FAQs-title">
+                      OTP to end the service
+                    </p>
+                    <div>
+                      <div class="code-container">
+                        <input
+                          type="number"
+                          class="code"
+                          placeholder="0"
+                          value={5}
+                          min="0"
+                          max="9"
+                          contentEditable={false}
+                        />
+                        <input
+                          type="number"
+                          class="code"
+                          placeholder="0"
+                          value={5}
+                          min="0"
+                          max="9"
+                          contentEditable={false}
+                        />
+                        <input
+                          type="number"
+                          class="code"
+                          placeholder="0"
+                          value={5}
+                          min="0"
+                          max="9"
+                          contentEditable={false}
+                        />
+                        <input
+                          type="number"
+                          class="code"
+                          placeholder="0"
+                          value={5}
+                          min="0"
+                          max="9"
+                          contentEditable={false}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <hr className="border-3 border-secondary border-bottom" />
+                </>
+              )}
+              {
+                (data.status == "pending" ||
+              data.status == "cancelled") ? null : 
+              <>
               <div>
                 <p className="fs-1 fw-bold">Professional assigned</p>
                 <div>
@@ -302,30 +364,9 @@ const Orderdetails = ({ open, handleClose, data }) => {
                       )}
                   </div> */}
                 </div>
-                <div className="pt-5">
-                  {/* {[...new Array(5)]
-                    .map(
-                      (value, index) =>
-                        <div key={index} className='py-3'>
-                          <div className='d-flex py-1'>
-                            <div className='user-review-avatar'>
-                              <img className="rounded-circle" src={"/image/serviceImages/" + data?.image} width={"50px"} height={"50px"} alt="img" />
-                            </div>
-                            <div className='user-review-detail'>
-                              <div className='d-flex justify-content-between'>
-                                <p className='mb-0 fs-4 fw-bold'>paras dasadiya</p>
-                                <p className='mb-0 fs-4'><AiTwotoneStar /> 5</p>
-                              </div>
-                              <p className='mb-0 fs-5 text-muted'>Mar 2023</p>
-                            </div>
-                          </div>
-                          <div className='py-1'>
-                            <p className='mb-0 fs-4'>Very Good</p>
-                          </div>
-                        </div>
-                    )} */}
-                </div>
               </div>
+              </>
+                }
             </div>
           </DialogContent>
           <DialogActions>

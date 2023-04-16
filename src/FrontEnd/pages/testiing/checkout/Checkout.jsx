@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import "./checkout.css";
 import { Formik, Form, Field } from "formik";
 import * as yup from "yup";
@@ -10,8 +10,8 @@ import {
   clearErrors_cartDetails,
   getCartDetails,
 } from "../../../store/action/cartAction";
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Checkout = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -128,13 +128,21 @@ const Checkout = () => {
     //   .string()
     //   .email("Enter Valid Email")
     //   .required("Email is Required"),
+    phone: yup
+      .string()
+      .required("Phone No. is Required")
+      .matches(/^[0-9]*$/, "Phone should only digit")
+      .length(10, "Enter 10 Digit"),
     address: yup.string().required("Address is Required"),
     state: yup.string().required("State is Required"),
     city: yup
       .string()
       .required("City is Required")
       .matches(/^[a-zA-Z ]*$/, "city must Alphabet"),
-    pinCode: yup.string().length(6, "Enter 6 Digit").required("PinCode is Required"),
+    pinCode: yup
+      .string()
+      .length(6, "Enter 6 Digit")
+      .required("PinCode is Required"),
     // date: yup.string().required("Select Date"),
     // time: yup.string().required("Select time"),
     date: yup
@@ -172,15 +180,15 @@ const Checkout = () => {
     let startTime = new Date(selectedDate + " " + selectedTime);
     let endTime = new Date(startTime.getTime() + cart.totalTime * 60000);
     let orderFee = 60;
-    let tax = (cart?.subTotal) ? Math.round(cart?.subTotal * 5 / 100) : 0;
-    let grandTotal = (cart?.subTotal) + tax + orderFee;
+    let tax = cart?.subTotal ? Math.round((cart?.subTotal * 5) / 100) : 0;
+    let grandTotal = cart?.subTotal + tax + orderFee;
     let payload = {
       categoryId: cart?.cartData[0].items.categoryId,
       startTime: startTime,
       endTime: endTime,
       totalTime: cart?.totalTime,
       grandTotal: grandTotal,
-      paymentMode: 'COD',
+      paymentMode: "COD",
       tax: tax,
       subTotal: cart?.subTotal,
       orderFee: orderFee,
@@ -191,17 +199,20 @@ const Checkout = () => {
         pinCode: value.pinCode,
       },
       itemData: cart.cartData,
-    }
+      phone: value.phone
+    };
     const config = { headers: { "Content-Type": "application/json" } };
-    axios.post(`/api/v1/order/add`, payload, config)
-      .then(res => {
+    axios
+      .post(`/api/v1/order/add`, payload, config)
+      .then((res) => {
         console.log(res);
         console.log(res.data.data);
         toast.success(res.data.data);
-      }).catch((error) => {
-        toast.error(error.response.data.message);
-        console.log("error=>", error)
       })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+        console.log("error=>", error);
+      });
     console.log("payload---->", payload);
     // console.log("selectedDateselectedDate------------>", new Date(selectedDate + " " + selectedTime));
     // console.log("selectedTime --==>>", selectedTime);
@@ -239,10 +250,10 @@ const Checkout = () => {
                 // enctype="multipart/form-data"
                 method="post"
                 className="needs-validation checkout_form"
-              // novalidate=""
+                // novalidate=""
               >
-                {/* <div className="row">
-                  <div className="col-md-6 mb-3">
+                <div className="row">
+                  {/* <div className="col-md-6 mb-3">
                     <label htmlFor="fname">First name</label>
                     <Field
                       type="text"
@@ -252,19 +263,19 @@ const Checkout = () => {
                       placeholder="First Name"
                     />
                     <ErrorForm name="fname" />
-                  </div>
+                  </div> */}
                   <div className="col-md-6 mb-3">
-                    <label htmlFor="lname">Last name</label>
+                    <label htmlFor="phone">Phone No.</label>
                     <Field
                       type="text"
                       className="form-control check_user"
-                      id="lname"
-                      name="lname"
-                      placeholder="Last Name"
+                      id="phone"
+                      name="phone"
+                      placeholder="Phone No."
                     />
-                    <ErrorForm name="lname" />
+                    <ErrorForm name="phone" />
                   </div>
-                </div> */}
+                </div>
 
                 {/* <div className="mb-3">
                   <label htmlFor="email">Email</label>
@@ -334,7 +345,10 @@ const Checkout = () => {
                 <hr className="mb-4" />
                 <div className="time">
                   <h5>When should the professional arrive?</h5>
-                  <p>Your service will take approx. <span className="fw-bold">{cart.totalTime}</span> Minutes</p>
+                  <p>
+                    Your service will take approx.{" "}
+                    <span className="fw-bold">{cart.totalTime}</span> Minutes
+                  </p>
                   <div className="row">
                     <div className="col-md-6 mb-3">
                       <label htmlFor="date">Select Date</label>
@@ -395,7 +409,12 @@ const Checkout = () => {
                 {cart?.cartData?.map((value, index) => {
                   return (
                     <li key={index} className="d-flex justify-content-between">
-                      {value?.serviceData[0].serviceName} X {value?.items?.quantity} <span><span>&#8377; </span>{value?.serviceData[0].price * value?.items?.quantity}</span>
+                      {value?.serviceData[0].serviceName} X{" "}
+                      {value?.items?.quantity}{" "}
+                      <span>
+                        <span>&#8377; </span>
+                        {value?.serviceData[0].price * value?.items?.quantity}
+                      </span>
                     </li>
                   );
                 })}
@@ -414,17 +433,36 @@ const Checkout = () => {
               </ul>
 
               <p className="d-flex justify-content-between">
-                Sub Total <span><span>&#8377; </span>{cart.subTotal}</span>
+                Sub Total{" "}
+                <span>
+                  <span>&#8377; </span>
+                  {cart.subTotal}
+                </span>
               </p>
               <p className="d-flex justify-content-between">
-                Taxes and Fee(5%) <span><span>&#8377; </span>{(cart?.subTotal) ? Math.round(cart?.subTotal * 5 / 100) : 0}</span>
+                Taxes and Fee(5%){" "}
+                <span>
+                  <span>&#8377; </span>
+                  {cart?.subTotal ? Math.round((cart?.subTotal * 5) / 100) : 0}
+                </span>
               </p>
               <p className="d-flex justify-content-between">
-                Order Fee <span><span>&#8377; </span>60</span>
+                Order Fee{" "}
+                <span>
+                  <span>&#8377; </span>60
+                </span>
               </p>
 
               <h4 className="d-flex justify-content-between">
-                Grand Total <span><span>&#8377; </span>{(cart?.subTotal) + ((cart?.subTotal) ? Math.round(cart?.subTotal * 5 / 100) : 0) + 60}</span>
+                Grand Total{" "}
+                <span>
+                  <span>&#8377; </span>
+                  {cart?.subTotal +
+                    (cart?.subTotal
+                      ? Math.round((cart?.subTotal * 5) / 100)
+                      : 0) +
+                    60}
+                </span>
               </h4>
             </div>
           </div>

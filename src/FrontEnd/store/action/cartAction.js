@@ -11,8 +11,8 @@ import {
   ADD_TO_CART_FAIL,
   CLEAR_ERRORS as CLEAR_ERRORS_cartOperation
 } from "../slice/cartSlice/cartOperationSlice";
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export function getCartDetails(payload) {
   return async (dispatch, getState) => {

@@ -75,10 +75,10 @@ export const Navbar = () => {
         </p>}
         <p className={navbarStyles.logout}>
           {isAuthenticated ? (
-            <p onClick={handleLogout}>Logout</p>
+            <span onClick={handleLogout} className="text-white">Logout</span>
           ) : (
             <Link to="/SignUp">
-              <p>Sign up</p>
+              <span className="text-white">Sign up</span>
             </Link>
           )}
         </p>

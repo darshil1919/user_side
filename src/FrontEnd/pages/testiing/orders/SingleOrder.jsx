@@ -32,7 +32,7 @@ const SingleOrder = ({ data }) => {
               })}
             </h5>
             <p className="card-text text-danger">
-              {(data.status == "pending" || data.status == "canclelled") ? 
+              {(data.status == "pending" || data.status == "cancelled") ? 
               <span className="text-uppercase text-danger">BOOKING {data.status}</span>
                : null
               }
