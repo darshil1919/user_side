@@ -22,6 +22,10 @@ import cartDetailsSlice from './slice/cartSlice/cartDetailsSlice';
 // order slice
 import orderDetailsSlice from './slice/orderSlice/orderDetailsSlice';
 
+// review slice
+import reviewDetailsSlice from './slice/reviewSlice/reviewDetailsSlice';
+import reviewOperationSlice from './slice/reviewSlice/reviewOperationSlice';
+
 const store = configureStore({
     reducer: {
         // user slice
@@ -45,7 +49,11 @@ const store = configureStore({
         cartOperation : cartOperationSlice,
 
         // order slice
-        orderDetails: orderDetailsSlice
+        orderDetails: orderDetailsSlice,
+
+        // review slice
+        reviewDetails: reviewDetailsSlice,
+        reviewOperation: reviewOperationSlice
     },
 });
 
