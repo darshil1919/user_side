@@ -41,6 +41,7 @@ import ProtectedRoute from './components/Route/ProtectedRoute';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadUser } from './store/action/userAction';
 import Orders from './pages/testiing/orders/Orders';
+import Profile from './pages/testiing/profile/Profile';
 
 
 function App() {
@@ -64,6 +65,7 @@ function App() {
         <Route path="/cart" element={<ProtectedRoute Component={Cart} />} />
         <Route path="/checkout" element={<ProtectedRoute Component={Checkout} />} />
         <Route path="/orders" element={<ProtectedRoute Component={Orders} />} />
+        <Route path="/profile" element={<ProtectedRoute Component={Profile} />} />
         {/* <Route path="/checkout" element={<Checkout />} /> */}
 
         <Route path="/Categories" element={<ServicesCategories />} />

@@ -13,7 +13,7 @@ export function getOrderList() {
       dispatch(ORDER_DETAILS_SUCCESS(data.data));
     } catch (error) {
       dispatch(ORDER_DETAILS_FAIL(error.response.data.message));
-      toast.error(error.response.data.message);
+      // toast.error(error.response.data.message);
     }
   };
 }

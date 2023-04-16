@@ -6,13 +6,22 @@ import navbarStyles from "./navbar.module.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/action/userAction";
+
+import Avatar from '@mui/material/Avatar';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Logout from '@mui/icons-material/Logout';
+
 // import axios from "../../api/axios";
 // import { useContext } from "react";
 // import AuthContext from "../../context/AuthProvider";
 
 export const Navbar = () => {
   // const { auth } = useContext(AuthContext);
-  let {isAuthenticated} = useSelector((state) => state.user)
+  let { isAuthenticated } = useSelector((state) => state.user)
   const dispatch = useDispatch();
 
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -32,6 +41,17 @@ export const Navbar = () => {
     // localStorage.removeItem("response");
     // window.location.reload();
     dispatch(logout())
+    setAnchorEl(null);
+  };
+
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   return (
@@ -45,10 +65,10 @@ export const Navbar = () => {
           <p>
             <Link to="/">Home</Link>
           </p>
-          {(isAuthenticated) ? 
-          <p>
-            <Link to="/orders">Orders</Link>
-          </p> : null
+          {(isAuthenticated) ?
+            <p>
+              <Link to="/orders">Orders</Link>
+            </p> : null
           }
           <p>
             <Link to="/RegisterAsProfessional">Register As Professional</Link>
@@ -69,19 +89,85 @@ export const Navbar = () => {
       </div>
 
       <div className={navbarStyles.navbar_sign}>
-        {isAuthenticated ? null : 
-        <p className={navbarStyles.signIn}>
-          {data.role ? data.fullName : <Link to="/SignIn">Sign in</Link>}
-        </p>}
-        <p className={navbarStyles.logout}>
-          {isAuthenticated ? (
-            <span onClick={handleLogout} className="text-white">Logout</span>
-          ) : (
-            <Link to="/SignUp">
-              <span className="text-white">Sign up</span>
-            </Link>
-          )}
-        </p>
+        {
+          isAuthenticated ? null :
+            // <p className={navbarStyles.signIn}>
+            <Link className={navbarStyles.signIn} to="/SignIn">Sign in</Link>
+          /* </p> */
+        }
+        {/* <div className=''> */}
+        {isAuthenticated ? (
+          // <span onClick={handleLogout} className="fs-4 text-white">Logout</span>
+          <>
+            <Tooltip title={<span style={{ fontSize: '12px', color: 'white' }}>Account Settings</span>}>
+              <IconButton
+                onClick={handleClick}
+                size="small"
+                // sx={{ ml: 2 }}
+                aria-controls={open ? 'account-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+              >
+                <Avatar sx={{ width: 32, height: 32, color: 'white' }} />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              anchorEl={anchorEl}
+              id="account-menu"
+              open={open}
+              onClose={handleClose}
+              // onClick={handleClose}
+              PaperProps={{
+                style: {
+                  width: 150,
+                },
+                elevation: 0,
+                sx: {
+                  overflow: 'visible',
+                  filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                  mt: 1.5,
+                  '& .MuiAvatar-root': {
+                    width: 32,
+                    height: 32,
+                    ml: -0.5,
+                    mr: 1,
+                  },
+                  '&:before': {
+                    content: '""',
+                    display: 'block',
+                    position: 'absolute',
+                    top: 0,
+                    right: 14,
+                    width: 10,
+                    height: 10,
+                    bgcolor: 'background.paper',
+                    transform: 'translateY(-50%) rotate(45deg)',
+                    zIndex: 0,
+                  },
+                },
+              }}
+              transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+              <MenuItem onClick={handleClose} className="fs-4 fw-bolder">
+                <Link to="/profile" className="d-flex align-items-center no-hover-black w-100">
+                  <Avatar sx={{ width: 32, height: 32, color: 'red', marginLeft: '-8px', marginRight: '12px', backgroundColor: 'white' }} /> Profile
+                </Link>
+              </MenuItem>
+              <MenuItem onClick={handleLogout} className="fs-4 fw-bolder">
+                <ListItemIcon>
+                  <Logout fontSize="large" />
+                </ListItemIcon>
+                Logout
+              </MenuItem>
+            </Menu>
+          </>
+        ) : (
+          <Link to="/SignUp" className={navbarStyles.signUp} >
+            Sign up
+          </Link>
+        )}
+        {/* </div> */}
       </div>
       <div className={navbarStyles.navbar_menu}>
         {toggleMenu ? (
@@ -106,10 +192,10 @@ export const Navbar = () => {
                 <p onClick={() => setToggleMenu(false)}>
                   <Link to="/">Home</Link>
                 </p>
-                {(isAuthenticated) ? 
-                <p onClick={() => setToggleMenu(false)}>
-                  <Link to="/orders">Orders</Link>
-                </p> : null
+                {(isAuthenticated) ?
+                  <p onClick={() => setToggleMenu(false)}>
+                    <Link to="/orders">Orders</Link>
+                  </p> : null
                 }
                 {/* <p onClick={() => setToggleMenu(false)}>
                   <Link to="/RegisterAsProfessional">
@@ -131,16 +217,16 @@ export const Navbar = () => {
               </div>
               <div className={navbarStyles.navbar_menu_container_links_sign}>
                 {isAuthenticated ? null :
-                <p
-                  onClick={() => setToggleMenu(false)}
-                  className={navbarStyles.signIn}
-                >
-                  {data.role ? (
-                    data.fullName
-                  ) : (
-                    <Link to="/SignIn">Sign in</Link>
-                  )}
-                </p>
+                  <p
+                    onClick={() => setToggleMenu(false)}
+                    className={navbarStyles.signIn}
+                  >
+                    {data.role ? (
+                      data.fullName
+                    ) : (
+                      <Link to="/SignIn">Sign in</Link>
+                    )}
+                  </p>
                 }
                 <div
                   onClick={() => setToggleMenu(false)}
@@ -166,6 +252,6 @@ export const Navbar = () => {
         )}
       </div>
       <Outlet />
-    </div>
+    </div >
   );
 };
