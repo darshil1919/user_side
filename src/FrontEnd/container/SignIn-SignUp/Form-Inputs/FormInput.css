@@ -6,10 +6,23 @@
 }
 
 .FormInputInput {
-  padding: 1.5rem;
-  margin: 10px 0px;
+  /* padding: 1.5rem; */
+  margin: 5px 0 10px 0px;
   border-radius: 5px;
-  border: 1px solid white;
+  /* border: 1px solid white; */
+  height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 0 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+
+.FormInputInput:focus {
+  border-color: var(--primary-color);
 }
 
 .FormInputLabel {
@@ -28,6 +41,6 @@ input:invalid[focused="true"] {
   border: 1px solid red;
 }
 
-input:invalid[focused="true"] ~ span {
+input:invalid[focused="true"]~span {
   display: block;
 }

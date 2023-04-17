@@ -87,8 +87,8 @@ export const SignIn = () => {
               <FormInput
                 key={input.id}
                 {...input}
-                // value={values[input.name]}
-                // onChange={onChange}
+              // value={values[input.name]}
+              // onChange={onChange}
               />
             ))}
             <button type="submit" className="SignInSignUpButton">
@@ -97,12 +97,12 @@ export const SignIn = () => {
           </Form>
         </Formik>
       </div>
-      {(loading)? <Backdrop
+      {(loading) ? <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}
       >
         <CircularProgress color="inherit" />
-      </Backdrop> : null }
+      </Backdrop> : null}
     </>
   );
 };

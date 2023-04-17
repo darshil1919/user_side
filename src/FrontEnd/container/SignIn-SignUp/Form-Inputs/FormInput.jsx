@@ -13,7 +13,7 @@ export const FormInput = (props) => {
   return (
     <>
       <div className="formInput">
-        <label className="FormInputLabel">{props.label}</label>
+        <label className="pt-2 FormInputLabel">{props.label}</label>
         <Field
           className="FormInputInput"
           type={props.type}
