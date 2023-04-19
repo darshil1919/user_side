@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { GoPrimitiveDot } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, getSubCategoryByCategory } from "../../../store/action/subcategoryAction";
+import Loader from "../../../components/loader/Loader";
 
 export const Subcategory = (props) => {
   Aos.init({ duration: 700 });
@@ -26,7 +27,7 @@ export const Subcategory = (props) => {
   }, []);
 
   if(loading == true){
-    return <h2>loading.....</h2>;
+    return <Loader />
   }
 
   return (
@@ -55,7 +56,7 @@ export const Subcategory = (props) => {
                   }
                 >
                   <GoPrimitiveDot fill="#6b7cff" size={20} />
-                  <p>{item.description}</p>
+                  <p className="mb-0">{item.subCategoryName}</p>
                 </div>
               </Link>
             </div>

@@ -64,12 +64,12 @@ const SingleCartItem = ({value, qty}) => {
         </div>
         <div className="content">
           <div className="d-flex justify-content-between">
-            <h3 className="fs-5">{value.serviceData[0].serviceName}</h3>
+            <h3 className="fs-4">{value.serviceData[0].serviceName}</h3>
             <p className="text-danger mb-0">
               <i aria-hidden="true" className="fa fa-trash"></i>
             </p>
           </div>
-          <h4 className="fs-6">
+          <h4 className="fs-4 text-start ms-0 mt-0">
           <span>&#8377; </span>
             {value.serviceData[0].price * value.items.quantity}
           </h4>

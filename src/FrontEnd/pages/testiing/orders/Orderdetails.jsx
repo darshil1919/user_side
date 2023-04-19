@@ -45,11 +45,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Orderdetails = ({ open, handleClose, data }) => {
   const classes = useStyles();
-  const [reviewDialogOpen, setDialogReviewOpen] = useState(false);
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
   const [reviewDialogData, setReviewDialogData] = useState({});
 
   let handleCloseReviewDialog = () => {
-    setDialogReviewOpen(false);
+    setReviewDialogOpen(false);
   };
 
   let onChange = () => {};
@@ -88,14 +88,6 @@ const Orderdetails = ({ open, handleClose, data }) => {
                       </div>
                     );
                   })}
-                  <div>
-                    <img src="/image/categoryImages/image-1680697523611.jpeg" />
-                    <p className="legend">Legend 2</p>
-                  </div>
-                  <div>
-                    <img src="/image/categoryImages/image-1680697523611.jpeg" />
-                    <p className="legend">Legend 3</p>
-                  </div>
                 </Carousel>
               </div>
               <div className="py-4 d-flex justify-content-between dialog-service-detail">
@@ -176,13 +168,23 @@ const Orderdetails = ({ open, handleClose, data }) => {
                                     _id: item._id
                                   });
                                 }
-                                setDialogReviewOpen(true);
+                                setReviewDialogOpen(true);
+                                console.log("is dialog open -->>", reviewDialogOpen);
                               }}>Review</span>
                           </>
                         ) : null}
                       </div>
                     );
                   })}
+                  <span className="pe-2">
+                          <RxDotFilled size={20} />
+                        </span>
+                        <span className="ps-2 fs-4 dialog-service-included-text">
+                        Taxes and Fee(5%)  
+                        </span>
+                        <span className="ps-2 fs-4 dialog-service-included-text">
+                        {data.tax}
+                        </span>
                 </div>
               </div>
               {/* <div className="py-2 dialog-service-excluded">
@@ -210,7 +212,30 @@ const Orderdetails = ({ open, handleClose, data }) => {
                     </p>
                     <div>
                       <div class="code-container">
-                        <input
+                        {
+                          data.startServiceCode.split("").map((value, index) => {
+                            return <input
+                              key={index}
+                              type="number"
+                              className="code"
+                              placeholder="0"
+                              value={value}
+                              min="0"
+                              max="9"
+                              contentEditable={false}
+                            />
+                          })
+                        }
+                        {/* <input
+                          type="number"
+                          class="code"
+                          placeholder="0"
+                          value={5}
+                          min="0"
+                          max="9"
+                          contentEditable={false}
+                        /> */}
+                        {/* <input
                           type="number"
                           class="code"
                           placeholder="0"
@@ -227,25 +252,7 @@ const Orderdetails = ({ open, handleClose, data }) => {
                           min="0"
                           max="9"
                           contentEditable={false}
-                        />
-                        <input
-                          type="number"
-                          class="code"
-                          placeholder="0"
-                          value={5}
-                          min="0"
-                          max="9"
-                          contentEditable={false}
-                        />
-                        <input
-                          type="number"
-                          class="code"
-                          placeholder="0"
-                          value={5}
-                          min="0"
-                          max="9"
-                          contentEditable={false}
-                        />
+                        /> */}
                       </div>
                     </div>
                   </div>
@@ -260,7 +267,21 @@ const Orderdetails = ({ open, handleClose, data }) => {
                     </p>
                     <div>
                       <div class="code-container">
-                        <input
+                      {
+                          data.endServiceCode.split("").map((value, index) => {
+                            return <input
+                              key={index}
+                              type="number"
+                              className="code"
+                              placeholder="0"
+                              value={value}
+                              min="0"
+                              max="9"
+                              contentEditable={false}
+                            />
+                          })
+                        }
+                        {/* <input
                           type="number"
                           class="code"
                           placeholder="0"
@@ -295,7 +316,7 @@ const Orderdetails = ({ open, handleClose, data }) => {
                           min="0"
                           max="9"
                           contentEditable={false}
-                        />
+                        /> */}
                       </div>
                     </div>
                   </div>
@@ -322,18 +343,19 @@ const Orderdetails = ({ open, handleClose, data }) => {
                         {/* <div className="col-md-6"> */}
                         <div className="d-flex flex-row border rounded">
                           <div className="p-0 w-25">
+                            {/* {console.log("worker data", )} */}
                             <img
-                              src="https://c1.staticflickr.com/3/2862/12328317524_18e52b5972_k.jpg"
+                              src={"/image/workerImages/" + data?.workerData?.[0]?.avatar}
                               className="img-thumbnail border-0"
                             />
                           </div>
                           <div className="pl-3 pt-2 pr-2 pb-2 w-75 border-left">
-                            <h4 className="text-primary">
+                            <h5 className="text-primary">
                               {data?.workerData?.[0].firstName +
                                 " " +
                                 data?.workerData?.[0].lastName}
-                            </h4>
-                            <h5 className="text-info">
+                            </h5>
+                            <h5 className="text-info fs-3">
                               Phone no. : {data?.workerData?.[0].phone}
                             </h5>
                             {/* <p className="text-right m-0">

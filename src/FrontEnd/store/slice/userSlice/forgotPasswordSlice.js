@@ -5,7 +5,6 @@ const forgotPasswordSlice = createSlice({
     name: 'forgotPassword',
     initialState: {
       loading: false,
-      data: {},
     },
     reducers: {
       FORGOT_PASSWORD_REQUEST(state, action){ //1
@@ -19,7 +18,6 @@ const forgotPasswordSlice = createSlice({
         return {
           ...state,
           loading: true,
-          error: null
         };  
       },
       FORGOT_PASSWORD_SUCCESS(state, action){ //3

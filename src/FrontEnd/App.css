@@ -126,6 +126,9 @@ button {
 .no-hover-black:hover {
   color: black;
 }
+.no-hover-white:hover {
+  color: white;
+}
 
 @media screen and (max-width: 1000px) {
   html {

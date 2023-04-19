@@ -13,8 +13,10 @@ import {
 import Details from "./Details";
 import OneService from "./OneService";
 import { getCartDetails } from "../../../store/action/cartAction";
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import { BsFillCartFill } from "react-icons/bs";
 
 export const Service = (props) => {
   Aos.init({ duration: 700 });
@@ -23,14 +25,14 @@ export const Service = (props) => {
   const category = searchParams.get("category");
 
   const dispatch = useDispatch();
-  const {isAuthenticated} = useSelector((state) =>  state.user)
+  const { isAuthenticated } = useSelector((state) => state.user);
   const { loading, error, service } = useSelector((state) => {
     return state.allService;
   });
 
   const cart = useSelector((state) => {
-    return state.cartDetails.cart.cartData
-  })
+    return state.cartDetails.cart.cartData;
+  });
 
   useEffect(() => {
     if (error) {
@@ -42,7 +44,7 @@ export const Service = (props) => {
     // }
 
     dispatch(getServiceBySubCategory(props.subCategoryName));
-    dispatch(getCartDetails({categoryName: category}))
+    dispatch(getCartDetails({ categoryName: category }));
   }, []);
 
   return (
@@ -50,32 +52,35 @@ export const Service = (props) => {
       <div className={serviceStyle.services_container_title}>
         <h4>{props.subCategoryName}</h4>
         <h5>{"Explore the greatest our services."}</h5>
-        {(cart && isAuthenticated) ? 
-        <Link className="btn btn-primary" to={"/cart?category=" + category}>Cart</Link> :
-        null
-        }
+        {cart && isAuthenticated ? (
+          <div className="d-flex justify-content-end">
+            <Link className="fs-1 text-end" to={"/cart?category=" + category}>
+              <BsFillCartFill />
+            </Link>
+          </div>
+        ) : null}
       </div>
       <div className={serviceStyle.services_container_content}>
         <div className="item-list details-active">
           {service?.map((item, index) => {
-            let quantity = 0
+            let quantity = 0;
             cart?.map((value) => {
-              if(value.items.serviceId == item._id){
-                quantity = value.items.quantity
+              if (value.items.serviceId == item._id) {
+                quantity = value.items.quantity;
               }
-            })
-            return (
-              <OneService key={index} item={item} qty={quantity} />
-            );
+            });
+            return <OneService key={index} item={item} qty={quantity} />;
           })}
         </div>
       </div>
-      {(loading)? <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop> : null }
+      {loading ? (
+        <Backdrop
+          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : null}
     </div>
   );
 };

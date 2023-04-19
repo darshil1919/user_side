@@ -7,8 +7,8 @@ import ScrollToTop from './ScrollToTop';
 import { Navbar } from './components/navbar/Navbar';
 import { Footer } from './components/footer/Footer';
 import { Home } from './pages/Home';
-import { ContactUs } from './pages/Contact-Us';
-import { RegisterAsProfessional } from './pages/Register-as-professional';
+import { ContactUs } from './pages/testiing/contactus/Contact-Us';
+import { RegisterAsProfessional } from './pages/testiing/registerasprofessional/Register-as-professional';
 import { ServicesCategories } from './pages/Services/ServicesCategories';
 import { ClientOrders } from './container/Orders-Dashboards/ClientOrders';
 import { SignUp } from './container/SignIn-SignUp/Sign-Up/SignUp';
@@ -42,6 +42,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadUser } from './store/action/userAction';
 import Orders from './pages/testiing/orders/Orders';
 import Profile from './pages/testiing/profile/Profile';
+import Resetpassword from './pages/testiing/resetpassword/Resetpassword';
 
 
 function App() {
@@ -61,11 +62,16 @@ function App() {
         <Route path="/SignIn" element={<SignIn />} />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/view" element={<View />} />
+        <Route path="/resetpassword/:token" element={<Resetpassword />} />
+        {/* <Route path="/view" element={<View />} /> */}
         {/* <Route path="/cart" element={<Cart />} /> */}
         <Route path="/cart" element={<ProtectedRoute Component={Cart} />} />
         <Route path="/checkout" element={<ProtectedRoute Component={Checkout} />} />
         <Route path="/orders" element={<ProtectedRoute Component={Orders} />} />
         <Route path="/profile" element={<ProtectedRoute Component={Profile} />} />
+        <Route path="/RegisterAsProfessional" element={<RegisterAsProfessional />} />
+        <Route path="/ContactUs" element={<ContactUs />} />
+        <Route path="*" element={<Error />} />
         {/* <Route path="/checkout" element={<Checkout />} /> */}
 
         <Route path="/Categories" element={<ServicesCategories />} />
@@ -146,9 +152,6 @@ function App() {
         <Route path="/categories/online_instructor/music_instructor" element={<MusicInstructor />} />
         <Route path="/categories/online_instructor/tuition_for_kids" element={<TuitionForKids />} />
 
-        <Route path="/RegisterAsProfessional" element={<RegisterAsProfessional />} />
-        <Route path="/ContactUs" element={<ContactUs />} />
-        <Route path="*" element={<Error />} />
         <Route path="/under-construction" element={<UnderConstruction />} />
         <Route path="/success.html" element={<Success />} />
       </Routes>
