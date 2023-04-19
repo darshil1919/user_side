@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { RiMenu3Line, RiCloseLine } from "react-icons/ri";
-import logo from "../../assets/icons/logo.png";
+// import logo from "../../assets/icons/logo.png";
 import navbarStyles from "./navbar.module.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../store/action/userAction";
+import logo from "../../assets/cropped_image.png";
 
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
@@ -58,6 +59,7 @@ export const Navbar = () => {
     <div className={navbarStyles.navbar}>
       <div className={navbarStyles.navbar_links_logo}>
         <img src={logo} alt="logo" />
+        {/* <span className="fw-bold fs-1">HomeBuddy</span> */}
       </div>
 
       <div className={navbarStyles.navbar_links}>

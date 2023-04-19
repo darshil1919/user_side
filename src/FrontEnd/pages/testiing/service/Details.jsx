@@ -19,9 +19,13 @@ import { RxCross2 } from 'react-icons/rx';
 import './details.css';
 import { makeStyles } from '@mui/styles';
 import { FaMinus, FaPlus, FaShoppingCart } from 'react-icons/fa';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateCart } from '../../../store/action/cartAction';
 import { useSearchParams } from 'react-router-dom';
+import { getReviewByService } from '../../../store/action/reviewAction';
+import Loader from '../../../components/loader/Loader';
+import moment from "moment";
+import { Avatar } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
   titleText: {
@@ -57,6 +61,8 @@ export default function Details({ open, handleClose, data, qty, handleIncrease, 
   const [addedToCart, setAddedToCart] = useState(false);
   const [quantity, setQuantity] = useState(qty);
 
+  const {loading, review} = useSelector((state) => state.reviewDetails);
+
 
   React.useEffect(() => {
     if (open) {
@@ -68,7 +74,10 @@ export default function Details({ open, handleClose, data, qty, handleIncrease, 
     if(qty){
       setQuantity(qty)
     }
-  }, [open, qty]);
+    if(data){
+      dispatch(getReviewByService({serviceId: data._id}))
+    }
+  }, [open, qty, data]);
 
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -81,6 +90,7 @@ export default function Details({ open, handleClose, data, qty, handleIncrease, 
   };
 
   return (
+    loading ? <Loader /> :
     <div>
       <Dialog
         open={open}
@@ -107,7 +117,6 @@ export default function Details({ open, handleClose, data, qty, handleIncrease, 
                   </div>
                 </div>
                 <div>
-                  {console.log("quantity in details -->>>", quantity)}
                   {qty < 1  ? (
                     <button className="btn fs-4 fw-bold cart-item_add-btn" onClick={handleIncrease}>
                       <span className=''>Add</span>
@@ -213,27 +222,30 @@ export default function Details({ open, handleClose, data, qty, handleIncrease, 
                   </div>
                 </div>
                 <div className='pt-5'>
-                  {[...new Array(5)]
-                    .map(
+                  {/* {console.log("reviews data", review)} */}
+                  {
+                  // [...new Array(5)]
+                    (review.length > 0)? review.map(
                       (value, index) =>
                         <div key={index} className='py-3'>
                           <div className='d-flex py-1'>
                             <div className='user-review-avatar'>
-                              <img className="rounded-circle" src={"/image/serviceImages/" + data?.image} width={"50px"} height={"50px"} alt="img" />
+                              {/* <img className="rounded-circle" src={"/image/serviceImages/" + data?.image} width={"50px"} height={"50px"} alt="img" /> */}
+                              <Avatar alt="Remy Sharp" />
                             </div>
                             <div className='user-review-detail'>
                               <div className='d-flex justify-content-between'>
-                                <p className='mb-0 fs-4 fw-bold'>paras dasadiya</p>
-                                <p className='mb-0 fs-4'><AiTwotoneStar /> 5</p>
+                                <p className='mb-0 fs-4 fw-bold'>{value?.userData?.[0].firstName + " " + value?.userData?.[0].lastName}</p>
+                                <p className='mb-0 fs-4'><AiTwotoneStar />{value?.rating}</p>
                               </div>
-                              <p className='mb-0 fs-5 text-muted'>Mar 2023</p>
+                              <p className='mb-0 fs-5 text-muted'>{moment(value.createdAt).format("ll")}</p>
                             </div>
                           </div>
                           <div className='py-1'>
-                            <p className='mb-0 fs-4'>Very Good</p>
+                            <p className='mb-0 fs-4'>{value?.description}</p>
                           </div>
                         </div>
-                    )}
+                    ) : null}
                 </div>
               </div>
             </div>

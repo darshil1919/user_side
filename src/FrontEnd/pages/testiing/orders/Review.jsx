@@ -87,17 +87,17 @@ const Review = ({ open, handleClose, data }) => {
               <TextareaAutosize
                 aria-label="empty textarea"
                 placeholder="Empty"
-                style={{ width: 200, height: 50 }}
+                style={{ width: 200, height: 125 }}
                 value={review.description}
                 readOnly={true}
               />
             </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>cancle</Button>
-          <Button onClick={() => {}}>
+          <Button onClick={handleClose}>Close</Button>
+          {/* <Button onClick={() => {}}>
             Delete
-          </Button>
+          </Button> */}
         </DialogActions>
       </Dialog>
     </>
@@ -144,7 +144,7 @@ const Review = ({ open, handleClose, data }) => {
               <TextareaAutosize
                 aria-label="empty textarea"
                 placeholder="Empty"
-                style={{ width: 200, height: 50 }}
+                style={{ width: 200, height: 125 }}
                 value={description}
                 onChange={(e) => {
                   setDescription(e.target.value);

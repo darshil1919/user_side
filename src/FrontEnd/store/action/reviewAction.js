@@ -39,3 +39,21 @@ export function getReviewDetails(payload) {
     }
   };
 }
+
+export function getReviewByService(payload) {
+  return async (dispatch, getState) => {
+    try {
+      console.log("payload of review--->>>", payload);
+      dispatch(REVIEW_DETAILS_REQUEST());
+
+      const config = { headers: { "Content-Type": "application/json" } };
+
+      const { data } = await axios.post(`/api/v1/review/getReviewByService`, payload, config);
+
+      dispatch(REVIEW_DETAILS_SUCCESS(data.data));
+    } catch (error) {
+      dispatch(REVIEW_DETAILS_FAIL(error.response.data.message));
+      // toast.error(error.response.data.message);
+    }
+  };
+}

@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, Route, Navigate } from "react-router-dom";
 // import { Login } from "../../pages";
-import Loader from "../Loader/Loader";
+import Loader from "../loader/Loader";
 import { SignIn } from "../../container/SignIn-SignUp/Sign-In/SignIn";
 
 // const ProtectedRoute = ({component: Component, ...rest }) => {
@@ -55,7 +55,8 @@ const ProtectedRoute = (props) => {
   if(loading){
     return <Loader />
   } else {
-  return isAuthenticated ? <Component /> : <SignIn />;
+  return isAuthenticated ? <Component /> : <Navigate to="/SignIn" />;
+  // return isAuthenticated ? <Component /> : <SignIn />;
   }
 }
 

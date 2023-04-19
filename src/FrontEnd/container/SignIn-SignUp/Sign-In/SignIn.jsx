@@ -9,6 +9,8 @@ import axios from "../../../api/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, login } from "../../../store/action/userAction";
 import { Backdrop, CircularProgress } from "@mui/material";
+import Loader from "../../../components/loader/Loader";
+import Forgotpassword from "./Forgotpassword";
 const LOGIN_URL = "/login";
 
 export const SignIn = () => {
@@ -17,6 +19,7 @@ export const SignIn = () => {
   );
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (error) {
@@ -72,6 +75,10 @@ export const SignIn = () => {
   //   setValues({ ...values, [e.target.name]: e.target.value });
   // };
 
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <div className="SignInSignUp">
@@ -91,18 +98,17 @@ export const SignIn = () => {
               // onChange={onChange}
               />
             ))}
+            <span className="fs-4" onClick={() => {
+              setOpen(true)
+            }}><u className=" text-primary">forgot password?</u></span>
             <button type="submit" className="SignInSignUpButton">
               Submit
             </button>
           </Form>
         </Formik>
       </div>
-      {(loading) ? <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={loading}
-      >
-        <CircularProgress color="inherit" />
-      </Backdrop> : null}
+      <Forgotpassword open={open} handleClose={handleClose} />
+      {(loading) ? <Loader /> : null}
     </>
   );
 };

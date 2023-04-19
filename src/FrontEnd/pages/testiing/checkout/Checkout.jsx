@@ -12,6 +12,7 @@ import {
 } from "../../../store/action/cartAction";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loader from "../../../components/loader/Loader";
 
 const Checkout = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -30,8 +31,6 @@ const Checkout = () => {
 
     dispatch(getCartDetails({ categoryName: category }));
   }, []);
-
-  console.log("cart---------->", cart);
 
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
@@ -199,7 +198,7 @@ const Checkout = () => {
         pinCode: value.pinCode,
       },
       itemData: cart.cartData,
-      phone: value.phone
+      phone: value.phone,
     };
     const config = { headers: { "Content-Type": "application/json" } };
     axios
@@ -232,13 +231,17 @@ const Checkout = () => {
     time: "",
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <>
       <div className="custom-container px-5">
-        <h1 className="text-center py-4">checkout</h1>
+        <h2 className="text-center py-4 checkout-title">checkout</h2>
         <div className="row">
           <div className="col-md-7">
-            <h4 className="mb-3">Address</h4>
+            <h4 className="mb-3 fs-1">Address</h4>
             <Formik
               initialValues={initialValues}
               validationSchema={validationschema}
@@ -391,7 +394,7 @@ const Checkout = () => {
                 <hr className="mb-4" />
                 <button
                   type="submit"
-                  className="btn font-bold p-2 checkout-btn"
+                  className="btn font-bold p-2 checkout-btn no-hover-white"
                 >
                   Proceed to checkout
                 </button>
@@ -399,9 +402,9 @@ const Checkout = () => {
             </Formik>
           </div>
           <div className=" col-md-5 checkout-cart-total">
-            <h4 className="mb-3">Cart Total</h4>
+            <h4 className="mb-3 fs-1">Cart Total</h4>
             <div className="checkout_cart_summary">
-              <h4 className="d-flex justify-content-between">
+              <h4 className="d-flex fs-1 justify-content-between">
                 Product <span>Total</span>
               </h4>
 
@@ -453,7 +456,7 @@ const Checkout = () => {
                 </span>
               </p>
 
-              <h4 className="d-flex justify-content-between">
+              <h4 className="d-flex fs-2 mx-0 justify-content-between">
                 Grand Total{" "}
                 <span>
                   <span>&#8377; </span>

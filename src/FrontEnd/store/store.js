@@ -3,7 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import userSlice from './slice/userSlice/userSlice';
 import userProfileSlice from './slice/userSlice/userProfileSlice';
 import forgotPasswordSlice from './slice/userSlice/forgotPasswordSlice';
-import allUserSlice from './slice/userSlice/allUserSlice';
+// import allUserSlice from './slice/userSlice/allUserSlice';
 import userDetailSlice from './slice/userSlice/userDetailSlice';
 
 // category slice
@@ -32,7 +32,7 @@ const store = configureStore({
         user: userSlice,
         profile: userProfileSlice,
         forgotPassword: forgotPasswordSlice,
-        allUser: allUserSlice,
+        // allUser: allUserSlice,
         userDetail: userDetailSlice,
 
         // category slice

@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const reviewDetailsSlice = createSlice({
     name: 'reviewDetails',
     initialState: {
-      loading: true,
+      loading: false,
       review: {}
     },
     reducers: {
