@@ -15,7 +15,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { getReviewByService } from "../../../store/action/reviewAction";
 
 const OneService = ({ item, qty }) => {
-  console.log("service data---<>>", item);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get("category");
@@ -40,9 +39,6 @@ const OneService = ({ item, qty }) => {
     }
     if (qty) {
       setQuantity(qty);
-    }
-    if(item){ 
-      // dispatch(getReviewByService({serviceId: item._id}))
     }
   }, [qty, dispatch]);
 
@@ -142,6 +138,7 @@ const OneService = ({ item, qty }) => {
             onClick={() => {
               setOpen(true);
               setDialogData(item);
+              dispatch(getReviewByService({serviceId: item._id}))
             }}
           >
             View Details

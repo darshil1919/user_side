@@ -43,7 +43,6 @@ export function getReviewDetails(payload) {
 export function getReviewByService(payload) {
   return async (dispatch, getState) => {
     try {
-      console.log("payload of review--->>>", payload);
       dispatch(REVIEW_DETAILS_REQUEST());
 
       const config = { headers: { "Content-Type": "application/json" } };

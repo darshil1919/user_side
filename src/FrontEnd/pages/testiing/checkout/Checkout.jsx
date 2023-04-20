@@ -13,6 +13,7 @@ import {
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../../../components/loader/Loader";
+import moment from "moment";
 
 const Checkout = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -106,6 +107,15 @@ const Checkout = () => {
     setSelectedTime("");
   };
 
+  const onClickDate = (value) => {
+    setSelectedDate(value);
+    setSelectedTime("");
+  };
+
+  const onClickTime = (value) => {
+    setSelectedTime(value);
+  };
+
   // Submit handler for form
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -144,38 +154,44 @@ const Checkout = () => {
       .required("PinCode is Required"),
     // date: yup.string().required("Select Date"),
     // time: yup.string().required("Select time"),
-    date: yup
-      .string()
-      ./* required("Image is required"). */ test(
-        "customValidation",
-        "Select Date",
-        (value) => {
-          console.log("selectedDate----->", selectedDate.length == 0);
-          if (selectedDate.length == 0) {
-            return false;
-          } else {
-            return true;
-          }
-        }
-      ),
-    time: yup
-      .string()
-      ./* required("Image is required"). */ test(
-        "customValidation",
-        "Select time",
-        (value) => {
-          // console.log("selectedDate----->", selectedDate.length == 0);
-          if (selectedTime.length == 0) {
-            return false;
-          } else {
-            return true;
-          }
-        }
-      ),
+    // date: yup
+    //   .string()
+    //   ./* required("Image is required"). */ test(
+    //     "customValidation",
+    //     "Select Date",
+    //     (value) => {
+    //       console.log("selectedDate----->", selectedDate.length == 0);
+    //       if (selectedDate.length == 0) {
+    //         return false;
+    //       } else {
+    //         return true;
+    //       }
+    //     }
+    //   ),
+    // time: yup
+    //   .string()
+    //   ./* required("Image is required"). */ test(
+    //     "customValidation",
+    //     "Select time",
+    //     (value) => {
+    //       // console.log("selectedDate----->", selectedDate.length == 0);
+    //       if (selectedTime.length == 0) {
+    //         return false;
+    //       } else {
+    //         return true;
+    //       }
+    //     }
+    //   ),
   });
 
   let onSubmitCheckout = (value) => {
-    // console.log("date --==>>", e);
+    console.log("date --==>>");
+    if(selectedDate == ""){
+			return toast.error("Please select date");
+		}
+		if(selectedTime == ""){
+			return toast.error("Please select time");
+		}
     let startTime = new Date(selectedDate + " " + selectedTime);
     let endTime = new Date(startTime.getTime() + cart.totalTime * 60000);
     let orderFee = 60;
@@ -309,38 +325,82 @@ const Checkout = () => {
                 <div className="row">
                   <div className="col-md-5 mb-3">
                     <label htmlFor="state">State</label>
-                    <Field
+                    {/* <Field
                       type="text"
                       className="form-control check_user"
                       id="state"
                       name="state"
                       placeholder="state"
                       required=""
-                    />
+                    /> */}
+                    <Field
+                      as="select"
+                      name="state"
+                      id="state"
+                      className="form-control form-select dateSelect"
+                    >
+                      <option value="">Select</option>
+                      <option value="gujarat">Gujarat</option>
+                    </Field>
                     <ErrorForm name="state" />
                   </div>
                   <div className="col-md-4 mb-3">
                     <label htmlFor="city">City</label>
-                    <Field
+                    {/* <Field
                       type="text"
                       className="form-control check_user"
                       id="city"
                       name="city"
                       placeholder="city"
                       required=""
-                    />
+                    /> */}
+                    <Field
+                      as="select"
+                      name="city"
+                      id="city"
+                      className="form-control form-select dateSelect"
+                    >
+                      <option value="">Select</option>
+                      <option value="surat">Surat</option>
+                    </Field>
                     <ErrorForm name="city" />
                   </div>
                   <div className="col-md-3 mb-3">
-                    <label htmlFor="pinCode">PinCode</label>
-                    <Field
+                    <label htmlFor="pinCode">Area</label>
+                    {/* <Field
                       type="text"
                       className="form-control check_user"
                       // pattern="[0-9]{6}"
                       id="pinCode"
                       name="pinCode"
                       placeholder="123456"
-                    />
+                    /> */}
+                    <Field
+                      as="select"
+                      name="pinCode"
+                      id="pinCode"
+                      className="form-control form-select dateSelect"
+                    >
+                      <option value="">Select</option>
+                      <option key={395010} value={395010}>
+                        BOMBAY MARKET
+                      </option>
+                      <option key={395008} value={395008}>
+                        A K ROAD
+                      </option>
+                      <option key={395006} value={395006}>
+                        VARACHHA ROAD
+                      </option>
+                      <option key={395004} value={395004}>
+                        KATARGAM
+                      </option>
+                      <option key={394210} value={394210}>
+                        UDHNA
+                      </option>
+                      <option key={395009} value={395009}>
+                        RAMNAGAR SURAT
+                      </option>
+                    </Field>
                     <ErrorForm name="pinCode" />
                   </div>
                 </div>
@@ -353,7 +413,7 @@ const Checkout = () => {
                     <span className="fw-bold">{cart.totalTime}</span> Minutes
                   </p>
                   <div className="row">
-                    <div className="col-md-6 mb-3">
+                    {/* <div className="col-md-6 mb-3">
                       <label htmlFor="date">Select Date</label>
                       <Field
                         as="select"
@@ -370,8 +430,29 @@ const Checkout = () => {
                         ))}
                       </Field>
                       <ErrorForm name="date" />
+                    </div> */}
+                    <div className="d-flex">
+                      {generateDates().map((value, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className={
+                              value == selectedDate
+                                ? "text-center py-2 px-3 m-2 time-date active-time-date"
+                                : "text-center py-2 px-3 m-2 time-date"
+                            }
+                            onClick={() => onClickDate(value)}
+                          >
+                            <p className="mb-0 text-muted text-capitalize day-name">
+                              {/* {value} */}
+                              {moment(new Date(value)).format("ddd")}
+                            </p>
+                            <p className="mb-0 fw-bold">{moment(new Date(value)).format("DD")}</p>
+                          </div>
+                        );
+                      })}
                     </div>
-                    <div className="col-md-6 mb-3">
+                    {/* <div className="col-md-6 mb-3">
                       <label htmlFor="">Select Time</label>
                       <Field
                         as="select"
@@ -388,6 +469,28 @@ const Checkout = () => {
                         ))}
                       </Field>
                       <ErrorForm name="time" />
+                    </div> */}
+                    <div className="pick-slot">
+                      <h5>Select start time of service</h5>
+                      <div className="d-flex flex-wrap">
+                        {generateTimeSlots().map((value, index) => {
+                          return (
+                            <div
+                              key={index}
+                              className={
+                                value == selectedTime
+                                  ? "text-uppercase d-flex justify-content-center align-items-center  p-2 m-2 time-slot active-time-slot"
+                                  : "text-uppercase d-flex justify-content-center align-items-center  p-2 m-2 time-slot"
+                              }
+                              onClick={() => {
+                                onClickTime(value);
+                              }}
+                            >
+                              {value}
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>

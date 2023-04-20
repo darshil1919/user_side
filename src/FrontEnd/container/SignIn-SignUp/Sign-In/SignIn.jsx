@@ -8,7 +8,6 @@ import * as yup from "yup";
 import axios from "../../../api/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, login } from "../../../store/action/userAction";
-import { Backdrop, CircularProgress } from "@mui/material";
 import Loader from "../../../components/loader/Loader";
 import Forgotpassword from "./Forgotpassword";
 const LOGIN_URL = "/login";
