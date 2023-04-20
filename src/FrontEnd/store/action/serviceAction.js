@@ -15,7 +15,6 @@ export function getServiceBySubCategory(subCategoryName) {
       const payload = {subCategoryName: subCategoryName}
 
       const { data } = await axios.post(`/api/v1/service/getServiceBySubCategory`, payload, config);
-      console.log(data.data)
 
       dispatch(ALL_SERVICE_SUCCESS(data.data));
     } catch (error) {

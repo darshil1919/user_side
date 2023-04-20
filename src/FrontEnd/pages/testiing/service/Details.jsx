@@ -74,10 +74,7 @@ export default function Details({ open, handleClose, data, qty, handleIncrease, 
     if(qty){
       setQuantity(qty)
     }
-    if(data){
-      dispatch(getReviewByService({serviceId: data._id}))
-    }
-  }, [open, qty, data]);
+  }, [open, qty]);
 
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -110,7 +107,7 @@ export default function Details({ open, handleClose, data, qty, handleIncrease, 
               <div className='py-4 d-flex justify-content-between dialog-service-detail'>
                 <div>
                   <p className='fw-bold mb-0 dialog-service-name'>{data?.serviceName}</p>
-                  <p className='fs-5 dialog-service-rating'> <AiTwotoneStar />4.83 (81.5K)</p>
+                  <p className='fs-5 dialog-service-rating'> <AiTwotoneStar />{review.avgRating} ({review.countRating})</p>
                   <div className='fs-5 d-flex dialog-service-price_rating'>
                     <span>₹{data?.price}</span>
                     <span className='ps-3'><RxDotFilled /> ₹{data?.duration} mins</span>
@@ -200,23 +197,24 @@ export default function Details({ open, handleClose, data, qty, handleIncrease, 
               <div>
                 <p className='fs-1 fw-bold'>Customer reviews</p>
                 <div>
-                  <p className='fs-5 d-flex align-items-center dialog-service-rating'> <AiTwotoneStar /> <span className='fs-1 fw-bolder'> 4.83 </span></p>
-                  <p className='fs-5 dialog-service-reviews'>81.5K reviews</p>
+                  <p className='fs-5 d-flex align-items-center dialog-service-rating'> <AiTwotoneStar /> <span className='fs-1 fw-bolder'> {review.avgRating} </span></p>
+                  <p className='fs-5 dialog-service-reviews'>{review.countRating} reviews</p>
                 </div>
                 <div className='dialog-service-rating-progress'>
                   <div>
-                    {[...new Array(5)]
-                      .map(
+                    {/* {[...new Array(5)] */}
+                    {review?.reviewCalculation?.map(
                         (value, index) => <div key={index} className='d-flex align-items-center py-2 justify-content-between'>
-                          <p className='fs-5 mb-0 d-flex align-items-center dialog-service-rating-star'> <AiTwotoneStar /><span>5</span></p>
+                          <p className='fs-5 mb-0 d-flex align-items-center dialog-service-rating-star'> <AiTwotoneStar /><span>{value.rating}</span></p>
                           <div className='dialog-service-progress-bar'>
                             <LinearProgress
                               variant="determinate"
-                              value={60}
+                              value={(value.value > 0) ? (value.value * 100) / review.countRating : 0}
+                              // value={0}
                               classes={{ colorPrimary: classes.colorPrimary, barColorPrimary: classes.barColorPrimary }}
                             />
                           </div>
-                          <p className='mb-0 dialog-service-rating-count text-end fs-5'>5.7K</p>
+                          <p className='mb-0 dialog-service-rating-count text-end fs-5'>{value.value}</p>
                         </div>
                       )}
                   </div>
@@ -225,7 +223,7 @@ export default function Details({ open, handleClose, data, qty, handleIncrease, 
                   {/* {console.log("reviews data", review)} */}
                   {
                   // [...new Array(5)]
-                    (review.length > 0)? review.map(
+                    (review?.reviewData?.length > 0)? review?.reviewData.map(
                       (value, index) =>
                         <div key={index} className='py-3'>
                           <div className='d-flex py-1'>

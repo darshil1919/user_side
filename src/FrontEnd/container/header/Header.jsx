@@ -45,11 +45,11 @@ export const Header = () => {
 
         <div className={headerStyles.inputBoxes}>
           <div className={headerStyles.gradient}></div>
-          <SearchBar
+          {/* <SearchBar
             placeholder="Search the Location"
             name="location"
             data={Cities}
-          />
+          /> */}
           <SearchBar
             placeholder="Search the Service"
             name="services"
