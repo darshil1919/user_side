@@ -34,18 +34,18 @@ export const Services = (props) => {
         <h5>{'Explore the greatest our services.'}</h5>
       </div>
       <div className={servicesStyles.services_container_content}>
-        {props.servicesProps.map((item) => {
+        {props.servicesProps.map((item, index) => {
           return (
             <div
               className={servicesStyles.services_container_content_item}
-              key={item.id}
+              key={index}
               data-aos="zoom-in-up"
             >
-              <Link to={"/categories/" + item.category + "/" + item.id}>
+              <Link to={`/view?category=${item?.categoryData?.[0].categoryName}&subcategory=${item?.subCategoryData?.[0].subCategoryName}`}>
                 <img
                   className={servicesStyles.services_container_content_item_img}
-                  src={item.img}
-                  alt={item.desc}
+                  src={"/image/serviceImages/" + item?.serviceData?.[0].image}
+                  alt={item?.serviceData[0].serviceName}
                 />
                 <div
                   className={
@@ -53,7 +53,7 @@ export const Services = (props) => {
                   }
                 >
                   <GoPrimitiveDot fill="#6b7cff" size={20} />
-                  <p>{item.desc}</p>
+                  <p>{item?.serviceData[0].serviceName}</p>
                 </div>
               </Link>
             </div>

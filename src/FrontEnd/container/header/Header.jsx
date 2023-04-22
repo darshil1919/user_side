@@ -9,6 +9,7 @@ import { SearchBar } from "../../components/searchBar/SearchBar";
 import allServices from "../../Data/ServicesImports";
 import { Cities } from "../../Data/CityData";
 import { Backdrop, CircularProgress } from "@mui/material";
+import { getServiceForSearch } from "../../store/action/serviceAction";
 
 // import { Test } from "../Test";
 
@@ -22,6 +23,7 @@ export const Header = () => {
     // console.log(state.allCategory);
     return state.allCategory;
   });
+  const {service} = useSelector((state) => state.allService)
 
   useEffect(() => {
     if (error) {
@@ -29,6 +31,7 @@ export const Header = () => {
       dispatch(clearErrors());
     }
     dispatch(getCategory());
+    dispatch(getServiceForSearch())
   }, []);
 
   // if (loading == true) {
@@ -53,7 +56,7 @@ export const Header = () => {
           <SearchBar
             placeholder="Search the Service"
             name="services"
-            data={allServices}
+            data={service}
           />
         </div>
 

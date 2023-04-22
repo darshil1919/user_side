@@ -35,6 +35,7 @@ const Checkout = () => {
 
   const [selectedTime, setSelectedTime] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
+  const [loadingForPlaceOrder, setLoadingForPlaceOrder] = useState(false);
 
   // Get current date and time
   const now = new Date();
@@ -61,7 +62,8 @@ const Checkout = () => {
       startTime.setHours(8, 0, 0, 0);
     }
     const endTime = new Date();
-    endTime.setHours(19, 30, 0, 0); // End time is 8 PM
+    endTime.setHours(20, 0, 0, 0); // End time is 8 PM
+    endTime.setTime(endTime.getTime() - cart.totalTime * 60 * 1000); // End time is 7:30 PM
     while (startTime <= endTime) {
       const time = startTime.toLocaleString("en-US", {
         hour: "numeric",
@@ -186,12 +188,12 @@ const Checkout = () => {
 
   let onSubmitCheckout = (value) => {
     console.log("date --==>>");
-    if(selectedDate == ""){
-			return toast.error("Please select date");
-		}
-		if(selectedTime == ""){
-			return toast.error("Please select time");
-		}
+    if (selectedDate == "") {
+      return toast.error("Please select date");
+    }
+    if (selectedTime == "") {
+      return toast.error("Please select time");
+    }
     let startTime = new Date(selectedDate + " " + selectedTime);
     let endTime = new Date(startTime.getTime() + cart.totalTime * 60000);
     let orderFee = 60;
@@ -217,14 +219,17 @@ const Checkout = () => {
       phone: value.phone,
     };
     const config = { headers: { "Content-Type": "application/json" } };
+    setLoadingForPlaceOrder(true)
     axios
       .post(`/api/v1/order/add`, payload, config)
       .then((res) => {
         console.log(res);
         console.log(res.data.data);
+        setLoadingForPlaceOrder(false)
         toast.success(res.data.data);
       })
       .catch((error) => {
+        setLoadingForPlaceOrder(false)
         toast.error(error.response.data.message);
         console.log("error=>", error);
       });
@@ -246,10 +251,6 @@ const Checkout = () => {
     date: "",
     time: "",
   };
-
-  if (loading) {
-    return <Loader />;
-  }
 
   return (
     <>
@@ -447,7 +448,9 @@ const Checkout = () => {
                               {/* {value} */}
                               {moment(new Date(value)).format("ddd")}
                             </p>
-                            <p className="mb-0 fw-bold">{moment(new Date(value)).format("DD")}</p>
+                            <p className="mb-0 fw-bold">
+                              {moment(new Date(value)).format("DD")}
+                            </p>
                           </div>
                         );
                       })}
@@ -473,7 +476,9 @@ const Checkout = () => {
                     <div className="pick-slot">
                       <h5>Select start time of service</h5>
                       <div className="d-flex flex-wrap">
-                        {generateTimeSlots().map((value, index) => {
+                        {
+                        // generateTimeSlots()?.length > 0 ?
+                        generateTimeSlots().map((value, index) => {
                           return (
                             <div
                               key={index}
@@ -488,8 +493,10 @@ const Checkout = () => {
                             >
                               {value}
                             </div>
-                          );
-                        })}
+                          )
+                        }) 
+                        // : <p>No time slot available for this day</p>
+                      }
                       </div>
                     </div>
                   </div>
@@ -574,6 +581,9 @@ const Checkout = () => {
           </div>
         </div>
       </div>
+      {
+        loading || loadingForPlaceOrder ? <Loader /> : null
+      }
     </>
   );
 };

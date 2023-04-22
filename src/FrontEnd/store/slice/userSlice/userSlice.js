@@ -14,6 +14,12 @@ const userSlice = createSlice({
                 isAuthenticated: false,
             }
         },
+        LOGOUT_REQUEST(state, action){
+            return{
+                ...state,
+                loading: true,
+            }
+        },
         LOGIN_SUCCESS(state, action){
             return {
                 ...state,
@@ -105,6 +111,7 @@ export default userSlice.reducer;
 
 export const { 
 LOGIN_REQUEST,
+LOGOUT_REQUEST,
 REGISTER_USER_REQUEST,
 LOAD_USER_REQUEST,
 LOGIN_SUCCESS,

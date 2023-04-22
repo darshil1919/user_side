@@ -17,6 +17,7 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { BsFillCartFill } from "react-icons/bs";
+import Loader from "../../../components/loader/Loader";
 
 export const Service = (props) => {
   Aos.init({ duration: 700 });
@@ -74,12 +75,7 @@ export const Service = (props) => {
         </div>
       </div>
       {loading ? (
-        <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={loading}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
+        <Loader />
       ) : null}
     </div>
   );

@@ -12,7 +12,10 @@ import {
 import React, { useEffect, useState } from "react";
 import StarIcon from "@mui/icons-material/Star";
 import { useDispatch, useSelector } from "react-redux";
-import { addReview, getReviewDetails } from "../../../store/action/reviewAction";
+import {
+  addReview,
+  getReviewDetails,
+} from "../../../store/action/reviewAction";
 import { getOrderList } from "../../../store/action/orderAction";
 
 const labels = {
@@ -34,13 +37,15 @@ const Review = ({ open, handleClose, data }) => {
   const [value, setValue] = useState(5);
   const [hover, setHover] = useState(-1);
   const [description, setDescription] = useState("");
-  const {error, loading, review} = useSelector((state) => state.reviewDetails);
+  const { error, loading, review } = useSelector(
+    (state) => state.reviewDetails
+  );
 
   useEffect(() => {
-    if(data?.reviewId){
-      dispatch(getReviewDetails({reviewId: data?.reviewId}))
+    if (data?.reviewId) {
+      dispatch(getReviewDetails({ reviewId: data?.reviewId }));
     }
-  }, [data])
+  }, [data]);
 
   function getLabelText(value) {
     return `${value} Star${value !== 1 ? "s" : ""}, ${labels[value]}`;
@@ -60,14 +65,12 @@ const Review = ({ open, handleClose, data }) => {
       })
     );
     setTimeout(() => {
-      dispatch(getOrderList())
-    }, 200)
+      dispatch(getOrderList());
+    }, 200);
     handleClose();
   };
 
-  return (
-    loading ? null :
-    (!data?.isEditable) ? 
+  return loading ? null : !data?.isEditable ? (
     <>
       <Dialog
         open={open}
@@ -75,33 +78,46 @@ const Review = ({ open, handleClose, data }) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{data.serviceId}</DialogTitle>
-        <DialogContent>
+        <DialogTitle id="alert-dialog-title" className="fs-4 pb-2">Review</DialogTitle>
+        <DialogContent className="pb-3">
           <DialogContentText id="alert-dialog-description">
-            <Rating name="read-only" value={0 || review?.rating} readOnly />
+            <Rating
+              sx={{ fontSize: "20px" }}
+              name="read-only"
+              value={0 || review?.rating}
+              // size="large"
+              readOnly
+            />
             {value !== null && (
-              <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
+              <Box sx={{ ml: 2, fontSize: "12px" }}>
+                {labels[hover !== -1 ? hover : value]}
+              </Box>
             )}
           </DialogContentText>
-            <Box>
-              <TextareaAutosize
-                aria-label="empty textarea"
-                placeholder="Empty"
-                style={{ width: 200, height: 125 }}
-                value={review.description}
-                readOnly={true}
-              />
-            </Box>
+          <Box>
+            <TextareaAutosize
+              aria-label="empty textarea"
+              placeholder="Empty"
+              style={{
+                width: 200,
+                height: 125,
+                fontSize: "14px",
+                padding: "7px",
+              }}
+              value={review.description}
+              readOnly={true}
+            />
+          </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
+          <Button onClick={handleClose} className="fs-4">Close</Button>
           {/* <Button onClick={() => {}}>
             Delete
           </Button> */}
         </DialogActions>
       </Dialog>
     </>
-    :
+  ) : (
     <>
       <Dialog
         open={open}
@@ -140,23 +156,21 @@ const Review = ({ open, handleClose, data }) => {
             )}
             {/* </Box> */}
           </DialogContentText>
-            <Box>
-              <TextareaAutosize
-                aria-label="empty textarea"
-                placeholder="Empty"
-                style={{ width: 200, height: 125 }}
-                value={description}
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}
-              />
-            </Box>
+          <Box>
+            <TextareaAutosize
+              aria-label="empty textarea"
+              placeholder="Empty"
+              style={{ width: 200, height: 125 }}
+              value={description}
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
+            />
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>cancle</Button>
-          <Button onClick={onSubmitReview}>
-            Submit
-          </Button>
+          <Button onClick={onSubmitReview}>Submit</Button>
         </DialogActions>
       </Dialog>
     </>

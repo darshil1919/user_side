@@ -14,6 +14,7 @@ import allSubCategorySlice from './slice/subCategorySlice/allSubCategorySlice';
 
 // service slice
 import allServiceSlice from './slice/serviceSlice/allServiceSlice';
+import Top6ServiceSlice from './slice/serviceSlice/Top6ServiceSlice';
 
 // cart slice
 import cartOperationSlice from './slice/cartSlice/cartOperationSlice';
@@ -43,6 +44,7 @@ const store = configureStore({
 
         // service slice
         allService: allServiceSlice,
+        top6Service: Top6ServiceSlice,
 
         // cart slice
         cartDetails: cartDetailsSlice,
