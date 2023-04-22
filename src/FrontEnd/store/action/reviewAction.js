@@ -56,3 +56,20 @@ export function getReviewByService(payload) {
     }
   };
 }
+
+export function getTop3Review(payload) {
+  return async (dispatch, getState) => {
+    try {
+      dispatch(REVIEW_DETAILS_REQUEST());
+
+      const config = { headers: { "Content-Type": "application/json" } };
+
+      const { data } = await axios.post(`/api/v1/review/gettop3review`, config);
+
+      dispatch(REVIEW_DETAILS_SUCCESS(data.data));
+    } catch (error) {
+      dispatch(REVIEW_DETAILS_FAIL(error.response.data.message));
+      // toast.error(error.response.data.message);
+    }
+  };
+}

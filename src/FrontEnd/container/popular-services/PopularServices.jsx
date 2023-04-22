@@ -2,33 +2,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { Services } from "../../components/services/Services";
 import { popularServices } from "../../Data/ServicesData";
 import { useEffect } from "react";
-import { clearErrors, getService } from "../../store/action/serviceAction";
+import { getTop6Service } from "../../store/action/serviceAction";
+import Loader from "../../components/loader/Loader";
 
 export const PopularServices = () => {
-  // const dispatch = useDispatch();
-  // const {error, loading, service: popularServices} = useSelector((state) => {
-  //   console.log("service====>>>>", state.allService.service.slice(0, 6))
-  //   return state.allService
-  // })
+  const dispatch = useDispatch();
+  const { service: popularServices } = useSelector((state) => state.top6Service)
   
-  // useEffect(() => {
-  //   if(error){
-  //     console.log(error)
-  //     dispatch(clearErrors())
-  //   }
-  //   dispatch(getService())
-  // }, [dispatch])
-
-  // if(loading == true){
-  //   return <h2>loading.....</h2>;
-  // }
+  useEffect(() => {
+    dispatch(getTop6Service())
+  }, [dispatch])
 
   return (
+    <>
     <Services
       servicesProps={popularServices}
       // category={popularServices.category}
       title={"Most Popular Services"}
       tagLine={"Explore the greatest our services."}
     />
+    {/* {
+      loading ? <Loader /> : null
+    } */}
+    </>
   );
 };

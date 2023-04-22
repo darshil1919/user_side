@@ -12,7 +12,7 @@ export const SearchBar = ({ placeholder, data, name }) => {
     setWordEntered(searchWord);
     const newFilter = data.filter((value) => {
       // console.log(value.desc);
-      return value.desc.toLowerCase().includes(searchWord.toLowerCase());
+      return value.serviceName.toLowerCase().includes(searchWord.toLowerCase());
     });
 
     if (searchWord === "") {
@@ -70,8 +70,8 @@ export const SearchBar = ({ placeholder, data, name }) => {
                     {value.desc}
                   </p>
                 ) : (
-                  <Link to={`categories/${value.category}/${value.id}`}>
-                    <p className={SearchBarStyles.result}>{value.desc}</p>
+                  <Link to={`/view?category=${value.categoryData[0].categoryName}&subcategory=${value.subCategoryData[0].subCategoryName}`}>
+                    <p className={SearchBarStyles.result}>{value.serviceName}</p>
                   </Link>
                 )}
               </>

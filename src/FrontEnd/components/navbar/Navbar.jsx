@@ -15,6 +15,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
+import Loader from "../loader/Loader";
 
 // import axios from "../../api/axios";
 // import { useContext } from "react";
@@ -22,7 +23,7 @@ import Logout from '@mui/icons-material/Logout';
 
 export const Navbar = () => {
   // const { auth } = useContext(AuthContext);
-  let { isAuthenticated } = useSelector((state) => state.user)
+  let { loading, isAuthenticated } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -56,9 +57,12 @@ export const Navbar = () => {
   };
 
   return (
+    <>
     <div className={navbarStyles.navbar}>
       <div className={navbarStyles.navbar_links_logo}>
+        <Link to="/">
         <img src={logo} alt="logo" />
+        </Link>
         {/* <span className="fw-bold fs-1">HomeBuddy</span> */}
       </div>
 
@@ -153,7 +157,7 @@ export const Navbar = () => {
             >
               <MenuItem onClick={handleClose} className="fs-4 fw-bolder">
                 <Link to="/profile" className="d-flex align-items-center no-hover-black w-100">
-                  <Avatar sx={{ width: 32, height: 32, color: 'red', marginLeft: '-8px', marginRight: '12px', backgroundColor: 'white' }} /> Profile
+                  <Avatar sx={{ width: 32, height: 32, color: 'black', marginLeft: '-8px', marginRight: '12px', backgroundColor: 'white' }} /> Profile
                 </Link>
               </MenuItem>
               <MenuItem onClick={handleLogout} className="fs-4 fw-bolder">
@@ -218,16 +222,17 @@ export const Navbar = () => {
                 </p>
               </div>
               <div className={navbarStyles.navbar_menu_container_links_sign}>
-                {isAuthenticated ? null :
+                {isAuthenticated ? <p
+                    onClick={() => setToggleMenu(false)}
+                    className={navbarStyles.signIn}
+                  >
+                      <Link to="/profile">Profile</Link>
+                  </p> :
                   <p
                     onClick={() => setToggleMenu(false)}
                     className={navbarStyles.signIn}
                   >
-                    {data.role ? (
-                      data.fullName
-                    ) : (
                       <Link to="/SignIn">Sign in</Link>
-                    )}
                   </p>
                 }
                 <div
@@ -255,5 +260,9 @@ export const Navbar = () => {
       </div>
       <Outlet />
     </div >
+    {
+      loading ? <Loader /> :  null
+    }
+    </>
   );
 };
