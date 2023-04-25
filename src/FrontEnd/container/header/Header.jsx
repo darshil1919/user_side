@@ -23,7 +23,7 @@ export const Header = () => {
     // console.log(state.allCategory);
     return state.allCategory;
   });
-  const {service} = useSelector((state) => state.allService)
+  const {service} = useSelector((state) => state.serviceList);
 
   useEffect(() => {
     if (error) {

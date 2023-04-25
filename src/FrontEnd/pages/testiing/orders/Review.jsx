@@ -52,9 +52,6 @@ const Review = ({ open, handleClose, data }) => {
   }
 
   let onSubmitReview = () => {
-    console.log("data --->>", data);
-    console.log("value --->>", typeof value);
-    console.log("description --->>>", description);
     dispatch(
       addReview({
         serviceId: data.serviceId,
