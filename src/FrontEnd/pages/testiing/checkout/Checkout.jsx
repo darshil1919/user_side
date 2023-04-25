@@ -233,7 +233,7 @@ const Checkout = () => {
         toast.error(error.response.data.message);
         console.log("error=>", error);
       });
-    console.log("payload---->", payload);
+    // console.log("payload---->", payload);
     // console.log("selectedDateselectedDate------------>", new Date(selectedDate + " " + selectedTime));
     // console.log("selectedTime --==>>", selectedTime);
     // console.log("selectedDate --==>>", selectedDate);

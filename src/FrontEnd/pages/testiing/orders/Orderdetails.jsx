@@ -68,7 +68,7 @@ const Orderdetails = ({ open, handleClose, data }) => {
       >
         <Paper style={{ width: 500 }}>
           <DialogTitle className={classes.titleText}>
-            {data?.serviceName}
+            Order Id : {data?._id}
           </DialogTitle>
           <DialogContent dividers={true}>
             <div>
@@ -84,7 +84,7 @@ const Orderdetails = ({ open, handleClose, data }) => {
                     return (
                       <div key={index}>
                         <img src={"/image/serviceImages/" + value.image} />
-                        <p className="legend">Legend 1</p>
+                        <p className="legend">{value.serviceName}</p>
                       </div>
                     );
                   })}
@@ -106,7 +106,7 @@ const Orderdetails = ({ open, handleClose, data }) => {
                     </span>
                   </div>
                   <div className="mt-3">
-                    {(data.status == "pending" || data.status == "cancelled") ? (
+                    {data.status == "pending" || data.status == "cancelled" ? (
                       <span className="text-uppercase m-2 h4 text-danger">
                         BOOKING {data.status}
                       </span>
@@ -145,9 +145,10 @@ const Orderdetails = ({ open, handleClose, data }) => {
                           <RxDotFilled size={20} />
                         </span>
                         <span className="ps-2 fs-4 dialog-service-included-text">
-                          {item.serviceId} X {item.quantity}
+                          {item.serviceName} X {item.quantity}
                         </span>
                         <span className="ps-2 fs-4 dialog-service-included-text">
+                          <span> &#8377;</span>
                           {item.price * item.quantity}
                         </span>
                         {data.status == "completed" ? (
@@ -155,36 +156,55 @@ const Orderdetails = ({ open, handleClose, data }) => {
                             <span
                               className="ps-2 fs-4 link-primary dialog-service-included-text"
                               onClick={() => {
-                                if(item.reviewId){
+                                if (item.reviewId) {
                                   setReviewDialogData({
                                     isEditable: false,
-                                    reviewId: item.reviewId
-                                  })
+                                    reviewId: item.reviewId,
+                                  });
                                 } else {
                                   setReviewDialogData({
                                     isEditable: true,
                                     serviceId: item.serviceId,
                                     orderId: data._id,
-                                    _id: item._id
+                                    _id: item._id,
                                   });
                                 }
                                 setReviewDialogOpen(true);
-                                console.log("is dialog open -->>", reviewDialogOpen);
-                              }}>Review</span>
+                                console.log(
+                                  "is dialog open -->>",
+                                  reviewDialogOpen
+                                );
+                              }}
+                            >
+                              Review
+                            </span>
                           </>
                         ) : null}
                       </div>
                     );
                   })}
                   <span className="pe-2">
-                          <RxDotFilled size={20} />
-                        </span>
-                        <span className="ps-2 fs-4 dialog-service-included-text">
-                        Taxes and Fee(5%)  
-                        </span>
-                        <span className="ps-2 fs-4 dialog-service-included-text">
-                        {data.tax}
-                        </span>
+                    <RxDotFilled size={20} />
+                  </span>
+                  <span className="ps-2 fs-4 dialog-service-included-text">
+                    Taxes and Fee(5%)
+                  </span>
+                  <span className="ps-2 fs-4 dialog-service-included-text">
+                    <span> &#8377;</span>
+                    {data.tax}
+                  </span>
+                  <div>
+                  <span className="pe-2">
+                    <RxDotFilled size={20} />
+                  </span>
+                  <span className="ps-2 fs-4 dialog-service-included-text">
+                    Minimum Order Fees
+                  </span>
+                  <span className="ps-2 fs-4 dialog-service-included-text">
+                    <span> &#8377;</span>
+                    60
+                  </span>
+                  </div>
                 </div>
               </div>
               {/* <div className="py-2 dialog-service-excluded">
@@ -204,7 +224,7 @@ const Orderdetails = ({ open, handleClose, data }) => {
                 </div>
               </div> */}
               <hr className="border-3 border-secondary border-bottom" />
-              {(data.status != "confirmed") ? null : (
+              {data.status != "confirmed" ? null : (
                 <>
                   <div className="py-2 dialog-service-FAQs">
                     <p className="fw-bold mb-1 text-capitalize dialog-service-FAQs-title">
@@ -212,9 +232,9 @@ const Orderdetails = ({ open, handleClose, data }) => {
                     </p>
                     <div>
                       <div class="code-container">
-                        {
-                          data.startServiceCode.split("").map((value, index) => {
-                            return <input
+                        {data.startServiceCode.split("").map((value, index) => {
+                          return (
+                            <input
                               key={index}
                               type="number"
                               className="code"
@@ -224,8 +244,8 @@ const Orderdetails = ({ open, handleClose, data }) => {
                               max="9"
                               contentEditable={false}
                             />
-                          })
-                        }
+                          );
+                        })}
                         {/* <input
                           type="number"
                           class="code"
@@ -259,7 +279,7 @@ const Orderdetails = ({ open, handleClose, data }) => {
                   <hr className="border-3 border-secondary border-bottom" />
                 </>
               )}
-              {(data.status != "working") ? null : (
+              {data.status != "working" ? null : (
                 <>
                   <div className="py-2 dialog-service-FAQs">
                     <p className="fw-bold mb-1 text-capitalize dialog-service-FAQs-title">
@@ -267,9 +287,9 @@ const Orderdetails = ({ open, handleClose, data }) => {
                     </p>
                     <div>
                       <div class="code-container">
-                      {
-                          data.endServiceCode.split("").map((value, index) => {
-                            return <input
+                        {data.endServiceCode.split("").map((value, index) => {
+                          return (
+                            <input
                               key={index}
                               type="number"
                               className="code"
@@ -279,8 +299,8 @@ const Orderdetails = ({ open, handleClose, data }) => {
                               max="9"
                               contentEditable={false}
                             />
-                          })
-                        }
+                          );
+                        })}
                         {/* <input
                           type="number"
                           class="code"
@@ -323,53 +343,54 @@ const Orderdetails = ({ open, handleClose, data }) => {
                   <hr className="border-3 border-secondary border-bottom" />
                 </>
               )}
-              {
-                (data.status == "pending" ||
-              data.status == "cancelled") ? null : 
-              <>
-              <div>
-                <p className="fs-1 fw-bold">Professional assigned</p>
-                <div>
-                  {/* <p className="fs-5 d-flex align-items-center dialog-service-rating">
+              {data.status == "pending" || data.status == "cancelled" ? null : (
+                <>
+                  <div>
+                    <p className="fs-1 fw-bold">Professional assigned</p>
+                    <div>
+                      {/* <p className="fs-5 d-flex align-items-center dialog-service-rating">
                     <AiTwotoneStar />
                     <span className="fs-1 fw-bolder"> 4.83 </span>
                   </p>
                   <p className="fs-5 dialog-service-reviews">81.5K reviews</p> */}
-                </div>
-                <div className="dialog-service-rating-progress">
-                  <section className="container mt-4 mb-4">
-                    <div className="container">
-                      <div className="row mb-3">
-                        {/* <div className="col-md-6"> */}
-                        <div className="d-flex flex-row border rounded">
-                          <div className="p-0 w-25">
-                            {/* {console.log("worker data", )} */}
-                            <img
-                              src={"/image/workerImages/" + data?.workerData?.[0]?.avatar}
-                              className="img-thumbnail border-0"
-                            />
-                          </div>
-                          <div className="pl-3 pt-2 pr-2 pb-2 w-75 border-left">
-                            <h5 className="text-primary">
-                              {data?.workerData?.[0].firstName +
-                                " " +
-                                data?.workerData?.[0].lastName}
-                            </h5>
-                            <h5 className="text-info fs-3">
-                              Phone no. : {data?.workerData?.[0].phone}
-                            </h5>
-                            {/* <p className="text-right m-0">
+                    </div>
+                    <div className="dialog-service-rating-progress">
+                      <section className="container mt-4 mb-4">
+                        <div className="container">
+                          <div className="row mb-3">
+                            {/* <div className="col-md-6"> */}
+                            <div className="d-flex flex-row border rounded">
+                              <div className="p-0 w-25">
+                                {/* {console.log("worker data", )} */}
+                                <img
+                                  src={
+                                    "/image/workerImages/" +
+                                    data?.workerData?.[0]?.avatar
+                                  }
+                                  className="img-thumbnail border-0"
+                                />
+                              </div>
+                              <div className="pl-3 pt-2 pr-2 pb-2 w-75 border-left">
+                                <h5 className="text-primary">
+                                  {data?.workerData?.[0].firstName +
+                                    " " +
+                                    data?.workerData?.[0].lastName}
+                                </h5>
+                                <h5 className="text-info fs-3">
+                                  Phone no. : {data?.workerData?.[0].phone}
+                                </h5>
+                                {/* <p className="text-right m-0">
                                 <a href="#" className="btn btn-primary">
                                   <i className="far fa-user"></i> View Profile
                                 </a>
                               </p> */}
-                            {/* </div> */}
+                                {/* </div> */}
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  </section>
-                  {/* <div>
+                      </section>
+                      {/* <div>
                     {[...new Array(5)]
                       .map(
                         (value, index) => <div key={index} className='d-flex align-items-center py-2 justify-content-between'>
@@ -385,10 +406,10 @@ const Orderdetails = ({ open, handleClose, data }) => {
                         </div>
                       )}
                   </div> */}
-                </div>
-              </div>
-              </>
-                }
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </DialogContent>
           <DialogActions>

@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import "./singleorder.css";
 import moment from "moment";
 import Orderdetails from "./Orderdetails";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { getOrderList } from "../../../store/action/orderAction";
 
 const SingleOrder = ({ data }) => {
   const [open, setOpen] = useState(false);
   const [dialogData, setDialogData] = useState({});
+  const [cancelOrderLoading, setCancelOrderLoading] = useState(false);
+  const dispatch = useDispatch();
 
   let onClickViewDetails = () => {
     setOpen(true);
@@ -15,6 +22,24 @@ const SingleOrder = ({ data }) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  let onCancelOrder = (id) => {
+    const config = { headers: { "Content-Type": "application/json" } };
+    axios
+      .post(`/api/v1/order/deleteorder?id=${id}`, config)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data.data);
+        setCancelOrderLoading(false)
+        toast.success(res.data.data);
+      })
+      .catch((error) => {
+        setCancelOrderLoading(false)
+        toast.error(error.response.data.message);
+        console.log("error=>", error);
+      });
+      dispatch(getOrderList())
+  }
 
   return (
     <>
@@ -26,10 +51,13 @@ const SingleOrder = ({ data }) => {
         /> */}
         <div className="card-body">
           <div className="text-section">
+            <span>Order Id : {data._id}</span>
             <h5 className="card-title fw-bold">
+              <span>
               {data?.items?.map((value, index) => {
-                return <span key={index}>{value.serviceId}</span>;
+                return <span key={index}>{value?.serviceName}, </span>;
               })}
+              </span>
             </h5>
             <p className="card-text text-danger">
               {(data.status == "pending" || data.status == "cancelled") ? 
@@ -67,10 +95,24 @@ const SingleOrder = ({ data }) => {
             >
               View Details
             </button>
+            {
+              data.status == "pending" ? 
+            <button
+              className="btn btn-dark h1"
+              onClick={() => {
+                onCancelOrder(data._id)
+              }}
+            >
+              Cancel
+            </button> : null
+            }
           </div>
         </div>
       </div>
       <Orderdetails open={open} handleClose={handleClose} data={dialogData} />
+      {
+        cancelOrderLoading ? <Loader /> : null
+      }
     </>
   );
 };

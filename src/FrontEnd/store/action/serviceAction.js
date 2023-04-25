@@ -6,6 +6,7 @@ ALL_SERVICE_FAIL,
 CLEAR_ERRORS
 } from "../slice/serviceSlice/allServiceSlice";
 import { TOP_6_SERVICE_FAIL, TOP_6_SERVICE_REQUEST, TOP_6_SERVICE_SUCCESS } from "../slice/serviceSlice/Top6ServiceSlice";
+import { SERVICE_LIST_FAIL, SERVICE_LIST_REQUEST, SERVICE_LIST_SUCCESS } from "../slice/serviceSlice/serviceListSlice";
 
 export function getServiceBySubCategory(subCategoryName) {
   return async (dispatch, getState) => {
@@ -27,15 +28,15 @@ export function getServiceBySubCategory(subCategoryName) {
 export function getServiceForSearch() {
   return async (dispatch, getState) => {
     try {
-      dispatch(ALL_SERVICE_REQUEST());
+      dispatch(SERVICE_LIST_REQUEST());
 
       const config = { headers: { "Content-Type": "application/json" } };
 
       const { data } = await axios.post(`/api/v1/service/getserviceforsearch`, config);
 
-      dispatch(ALL_SERVICE_SUCCESS(data.data));
+      dispatch(SERVICE_LIST_SUCCESS(data.data));
     } catch (error) {
-      dispatch(ALL_SERVICE_FAIL, error.response.data.message);
+      dispatch(SERVICE_LIST_FAIL, error.response.data.message);
     }
   };
 }

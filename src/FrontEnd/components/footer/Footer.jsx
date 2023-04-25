@@ -42,7 +42,7 @@ export const Footer = () => {
               </li>
             </ul>
           </div>
-          <div className={footerStyles.footer_col}>
+          {/* <div className={footerStyles.footer_col}>
             <h5>Services</h5>
             <ul>
               <li>
@@ -72,7 +72,7 @@ export const Footer = () => {
                 <Link to="/categories/business"> Business</Link>
               </li>
             </ul>
-          </div>
+          </div> */}
           <div className={footerStyles.footer_col}>
             <h5>follow us</h5>
             <div className={footerStyles.social_links}>
